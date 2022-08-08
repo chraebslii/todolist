@@ -1,19 +1,20 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
 import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
+import { AppBar, Avatar, Box, Button, Container, IconButton, MenuItem, Toolbar, Typography } from "@mui/material";
 
-const pages = [];
-const settings = ["Profile", "Logout"];
+const pages = [
+	{ href: "/", label: "App" },
+	{
+		href: "/settings",
+		label: "Settings",
+	},
+];
+const settings = [
+	{ href: "/profile", label: "Profile" },
+	{ href: "/logout", label: "Logout" },
+];
 
 const Header = () => {
 	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -68,8 +69,15 @@ const Header = () => {
 								display: { xs: "block", md: "none" },
 							}}>
 							{pages.map(page => (
-								<MenuItem key={page} onClick={handleCloseNavMenu}>
-									<Typography textAlign="center">{page}</Typography>
+								<MenuItem key={page.label} onClick={handleCloseNavMenu}>
+									<Typography
+										textAlign="center"
+										component={"a"}
+										sx={{ color: "text.primary", textDecoration: "none" }}
+										variant={"button"}
+										href={page.href}>
+										{page.label}
+									</Typography>
 								</MenuItem>
 							))}
 						</Menu>
@@ -80,10 +88,11 @@ const Header = () => {
 					<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
 						{pages.map(page => (
 							<Button
-								key={page}
+								key={page.label}
+								href={page.href}
 								onClick={handleCloseNavMenu}
-								sx={{ my: 2, color: "white", display: "block" }}>
-								{page}
+								sx={{ my: 2, color: "white", display: "block", textAlign: "center" }}>
+								{page.label}
 							</Button>
 						))}
 					</Box>
@@ -110,8 +119,15 @@ const Header = () => {
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}>
 							{settings.map(setting => (
-								<MenuItem key={setting} onClick={handleCloseUserMenu}>
-									<Typography textAlign="center">{setting}</Typography>
+								<MenuItem key={setting.label} onClick={handleCloseUserMenu}>
+									<Typography
+										textAlign="center"
+										component={"a"}
+										sx={{ color: "text.primary", textDecoration: "none" }}
+										variant={"button"}
+										href={setting.href}>
+										{setting.label}
+									</Typography>
 								</MenuItem>
 							))}
 						</Menu>
@@ -130,7 +146,7 @@ const BrandLogo = (desktop: boolean) => {
 			className={"navbar-brand"}
 			sx={{
 				display: desktop ? { xs: "none", md: "flex" } : { xs: "flex", md: "none" },
-				width: { xs: "60%", md: "auto" },
+				width: { xs: "50%", md: "auto" },
 				color: "white",
 				textDecoration: "none",
 			}}>
@@ -146,7 +162,7 @@ const BrandLogo = (desktop: boolean) => {
 				component={"span"}
 				variant={"h6"}
 				sx={{
-					marginLeft: "1rem",
+					margin: "0 1rem",
 					justifySelf: "center",
 					alignSelf: "center",
 				}}>
