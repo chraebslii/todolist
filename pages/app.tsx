@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Box, Container, Stack } from "@mui/material";
 import Layout from "@components/common/Layout";
-import Loader from "@components/common/Loader";
 import List from "@components/app/List";
+import ListSkeleton from "@components/app/ListSkeleton";
 
 export default function App() {
 	const [data, setData] = useState(null);
@@ -25,7 +25,11 @@ export default function App() {
 					<main>
 						<Container sx={{ padding: "2rem 0" }}>
 							<Stack spacing={5} direction={"column"} alignItems={"center"}>
-								{isLoading ? <Loader /> : data && data.map(list => <List key={list.id} {...list} />)}
+								{isLoading ? (
+									<ListSkeleton />
+								) : (
+									data && data.map(list => <List key={list.id} {...list} />)
+								)}
 							</Stack>
 						</Container>
 					</main>
