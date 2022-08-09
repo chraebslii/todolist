@@ -1,8 +1,8 @@
 import React from "react";
-import Layout from "../components/common/Layout";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Layout from "@components/common/Layout";
 
 export default class Index extends React.Component {
 	render() {

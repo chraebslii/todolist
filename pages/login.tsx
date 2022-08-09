@@ -1,6 +1,6 @@
 import React from "react";
-import Layout from "../components/common/Layout";
 import { Box, Container } from "@mui/material";
+import Layout from "@components/common/Layout";
 
 export default class Login extends React.Component {
 	render() {

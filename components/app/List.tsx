@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Divider, IconButton, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { Task } from "../../interfaces";
-import TaskItem from "./Task";
+import TaskItem from "@components/app/Task";
 
 export default class List extends React.Component<{
 	title?: string;

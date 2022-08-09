@@ -1,7 +1,7 @@
 import React from "react";
-import Layout from "../components/common/Layout";
 import { Box, Container, Stack } from "@mui/material";
-import List from "../components/app/List";
+import Layout from "@components/common/Layout";
+import List from "@components/app/List";
 
 export default class App extends React.Component {
 	render() {
