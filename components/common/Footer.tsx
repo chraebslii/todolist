@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 
 const links = [
 	{ href: "/imprint", label: "Impressum" },
@@ -12,7 +12,7 @@ export default class Footer extends React.Component {
 		return (
 			<>
 				<div className={"footer-space"}></div>
-				<Container
+				<Box
 					sx={{
 						bottom: 0,
 						position: "absolute",
@@ -57,7 +57,7 @@ export default class Footer extends React.Component {
 							</Stack>
 						</nav>
 					</footer>
-				</Container>
+				</Box>
 			</>
 		);
 	}

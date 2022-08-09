@@ -5,7 +5,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { AppBar, Avatar, Box, Button, Container, IconButton, MenuItem, Toolbar, Typography } from "@mui/material";
 
 const pages = [
-	{ href: "/", label: "App" },
+	{ href: "/app", label: "App" },
 	{
 		href: "/settings",
 		label: "Settings",
