@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Checkbox, FormControlLabel, IconButton, Stack, TextField } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 
-export default class TaskItem extends React.Component<{
+export default class Task extends React.Component<{
 	title?: string;
 	checked?: boolean;
 }> {

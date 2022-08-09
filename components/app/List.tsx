@@ -1,12 +1,12 @@
 import React from "react";
 import { Container, Divider, IconButton, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { Task } from "../../interfaces";
-import TaskItem from "@components/app/Task";
+import { TaskItem } from "../../interfaces";
+import Task from "@components/app/Task";
 
 export default class List extends React.Component<{
 	title?: string;
-	tasks?: Task[];
+	tasks?: TaskItem[];
 }> {
 	render() {
 		return (
@@ -38,7 +38,7 @@ export default class List extends React.Component<{
 								{this.props.tasks &&
 									this.props.tasks.map(task => {
 										if (!task.checked) {
-											return <TaskItem {...task} />;
+											return <Task {...task} />;
 										}
 									})}
 							</Stack>
@@ -53,7 +53,7 @@ export default class List extends React.Component<{
 									{this.props.tasks &&
 										this.props.tasks.map(task => {
 											if (task.checked) {
-												return <TaskItem {...task} />;
+												return <Task {...task} />;
 											}
 										})}
 								</Stack>

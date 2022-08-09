@@ -9,7 +9,22 @@ export type User = {
 	name: string;
 };
 
-export type Task = {
+export type Account = {
+	id: number;
+	name: string;
+	userName: string;
+	password: string;
+	email: string;
+};
+
+export type TaskList = {
+	id?: number;
+	title: string;
+	tasks?: TaskItem[];
+};
+
+export type TaskItem = {
+	id?: number;
 	title: string;
 	checked: boolean;
 };
