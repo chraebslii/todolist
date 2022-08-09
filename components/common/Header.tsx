@@ -37,7 +37,7 @@ const Header = () => {
 
 	return (
 		<AppBar position="static">
-			<Container maxWidth="xl">
+			<Container>
 				<Toolbar disableGutters>
 					{BrandLogo(true)}
 
