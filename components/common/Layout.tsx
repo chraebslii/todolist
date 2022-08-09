@@ -24,12 +24,14 @@ import Footer from "./Footer";
 const defaultTheme = createTheme({
 	palette: {
 		primary: { main: "#507cff" },
+		secondary: { main: "#000000" },
 		text: {
 			primary: "#000000",
 			secondary: "#ffffff",
 		},
 		background: {
 			default: "#ffffff",
+			paper: "#dcdcdc",
 		},
 	},
 });
