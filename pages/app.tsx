@@ -1,62 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Container, Stack } from "@mui/material";
 import Layout from "@components/common/Layout";
+import Loader from "@components/common/Loader";
 import List from "@components/app/List";
 
-export default class App extends React.Component {
-	render() {
-		return (
-			<>
-				<Layout title={"App"}>
-					<Box>
-						<main>
-							<Container sx={{ padding: "2rem 0" }}>
-								<Stack spacing={5} direction={"column"} alignItems={"center"}>
-									<List
-										title={"List 1"}
-										tasks={[
-											{
-												title: "Task 1.1",
-												checked: false,
-											},
-											{
-												title: "Task 1.2",
-												checked: true,
-											},
-											{
-												title: "Task 1.3",
-												checked: false,
-											},
-										]}
-									/>
-									<List
-										title={"List 2"}
-										tasks={[
-											{
-												title: "Task 2.1",
-												checked: true,
-											},
-											{
-												title: "Task 2.2",
-												checked: false,
-											},
-										]}
-									/>
-									<List
-										title={"List 3"}
-										tasks={[
-											{
-												title: "Task 3.1",
-												checked: true,
-											},
-										]}
-									/>
-								</Stack>
-							</Container>
-						</main>
-					</Box>
-				</Layout>
-			</>
-		);
-	}
+export default function App() {
+	const [data, setData] = useState(null);
+	const [isLoading, setLoading] = useState(false);
+
+	useEffect(() => {
+		setLoading(true);
+		fetch("http://localhost:3000/api/tasklists")
+			.then(res => res.json())
+			.then(data => {
+				setData(data);
+				setLoading(false);
+			});
+	}, []);
+
+	return (
+		<>
+			<Layout title={"App"}>
+				<Box>
+					<main>
+						<Container sx={{ padding: "2rem 0" }}>
+							<Stack spacing={5} direction={"column"} alignItems={"center"}>
+								{isLoading ? <Loader /> : data && data.map(list => <List key={list.id} {...list} />)}
+							</Stack>
+						</Container>
+					</main>
+				</Box>
+			</Layout>
+		</>
+	);
 }
