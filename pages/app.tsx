@@ -10,7 +10,7 @@ export default function App() {
 
 	useEffect(() => {
 		setLoading(true);
-		fetch("http://localhost:3000/api/tasklists")
+		fetch(`http://${window.location.href.split("/")[2]}/api/tasklists`)
 			.then(res => res.json())
 			.then(data => {
 				setData(data);
