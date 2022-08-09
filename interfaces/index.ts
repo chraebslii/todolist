@@ -8,3 +8,8 @@ export type User = {
 	id: number;
 	name: string;
 };
+
+export type Task = {
+	title: string;
+	checked: boolean;
+};

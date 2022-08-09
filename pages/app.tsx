@@ -12,9 +12,45 @@ export default class App extends React.Component {
 						<main>
 							<Container sx={{ padding: "2rem 0" }}>
 								<Stack spacing={5} direction={"column"} alignItems={"center"}>
-									<List title={"List 1"}></List>
-									<List title={"List 2"}></List>
-									<List title={"List 3"}></List>
+									<List
+										title={"List 1"}
+										tasks={[
+											{
+												title: "Task 1.1",
+												checked: false,
+											},
+											{
+												title: "Task 1.2",
+												checked: true,
+											},
+											{
+												title: "Task 1.3",
+												checked: false,
+											},
+										]}
+									/>
+									<List
+										title={"List 2"}
+										tasks={[
+											{
+												title: "Task 2.1",
+												checked: true,
+											},
+											{
+												title: "Task 2.2",
+												checked: false,
+											},
+										]}
+									/>
+									<List
+										title={"List 3"}
+										tasks={[
+											{
+												title: "Task 3.1",
+												checked: true,
+											},
+										]}
+									/>
 								</Stack>
 							</Container>
 						</main>

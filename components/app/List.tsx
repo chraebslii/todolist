@@ -1,10 +1,12 @@
 import React from "react";
 import { Container, Divider, IconButton, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { Task } from "../../interfaces";
+import TaskItem from "./Task";
 
 export default class List extends React.Component<{
-	children?: React.ReactNode;
 	title?: string;
+	tasks?: Task[];
 }> {
 	render() {
 		return (
@@ -14,7 +16,7 @@ export default class List extends React.Component<{
 					sx={{
 						backgroundColor: "background.paper",
 					}}>
-					<Stack spacing={3} direction={"column"} sx={{ height: "200px", padding: "1rem 0" }}>
+					<Stack spacing={3} direction={"column"} sx={{ padding: "1rem 0" }}>
 						<section>
 							<Stack
 								direction={"row"}
@@ -30,10 +32,32 @@ export default class List extends React.Component<{
 							</Stack>
 							<Divider />
 						</section>
+
 						<section>
 							<Stack spacing={3} direction={"column"}>
-								{this.props.children}
+								{this.props.tasks &&
+									this.props.tasks.map(task => {
+										if (!task.checked) {
+											return <TaskItem {...task} />;
+										}
+									})}
 							</Stack>
+						</section>
+
+						<section>
+							<details>
+								<summary className={"no-marker"}>
+									<Divider>show done items</Divider>
+								</summary>
+								<Stack spacing={3} direction={"column"}>
+									{this.props.tasks &&
+										this.props.tasks.map(task => {
+											if (task.checked) {
+												return <TaskItem {...task} />;
+											}
+										})}
+								</Stack>
+							</details>
 						</section>
 					</Stack>
 				</Container>
