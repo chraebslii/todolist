@@ -1,6 +1,8 @@
 import React from "react";
 import Layout from "../components/common/Layout";
-import { Box, Container } from "@mui/material";
+import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export default class Index extends React.Component {
 	render() {
@@ -9,8 +11,42 @@ export default class Index extends React.Component {
 				<Layout title={"Index"}>
 					<Box>
 						<main>
-							<Container>
-								<h1>Start</h1>
+							<Container sx={{ padding: "2rem 0" }}>
+								<Stack spacing={5} direction={"column"}>
+									<Box>
+										<section>
+											<Typography variant="h3" component={"span"}>
+												Welcome to Todolist
+											</Typography>
+											<Typography variant="h4" component={"span"}>
+												{" "}
+												- the best todolist ever!
+											</Typography>
+										</section>
+									</Box>
+									<Box>
+										<section>
+											<Stack spacing={3} direction={"row"}>
+												<Button
+													href={"/signup"}
+													variant="contained"
+													size={"medium"}
+													color="primary"
+													endIcon={<KeyboardArrowRightIcon />}>
+													Get Started
+												</Button>
+												<Button
+													href={"/login"}
+													variant="outlined"
+													size={"medium"}
+													color="primary"
+													endIcon={<AccountCircleIcon />}>
+													or Login
+												</Button>
+											</Stack>
+										</section>
+									</Box>
+								</Stack>
 							</Container>
 						</main>
 					</Box>
