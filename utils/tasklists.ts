@@ -38,15 +38,4 @@ export const Tasklists: TaskList[] = [
 			},
 		],
 	},
-	{
-		id: 3,
-		title: "List 3",
-		tasks: [
-			{
-				id: 5,
-				title: "Task 3.1",
-				checked: true,
-			},
-		],
-	},
 ];
