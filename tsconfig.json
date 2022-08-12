@@ -12,12 +12,17 @@
 		"forceConsistentCasingInFileNames": true,
 		"noEmit": true,
 		"esModuleInterop": true,
-		"module": "esnext",
+		//"module": "esnext",
+		"module": "commonjs",
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"jsx": "preserve",
 		"incremental": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"outDir": "./build",
+		"sourceMap": true,
 		"baseUrl": ".",
 		"paths": {
 			"@components/*": [
@@ -25,6 +30,9 @@
 			],
 			"@css/*": [
 				"css/*"
+			],
+			"@database/*": [
+				"database/*"
 			],
 			"@interfaces/*": [
 				"interfaces/*"
@@ -35,7 +43,7 @@
 			"@utils/*": [
 				"utils/*"
 			]
-		}
+		},
 	},
 	"include": [
 		"next-env.d.ts",
