@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ path: ".env.local" });
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { User } from "./entity/User";
@@ -11,7 +11,6 @@ export const Database = new DataSource({
 	port: +process.env.DB_PORT,
 	username: process.env.DB_USER,
 	password: `${process.env.DB_PASSWORD}`,
-	//password: "Chraebsli_04",
 	database: process.env.DB_NAME,
 	synchronize: true,
 	logging: false,

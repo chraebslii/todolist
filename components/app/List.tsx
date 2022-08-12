@@ -4,11 +4,11 @@ import AddIcon from "@mui/icons-material/Add";
 import { TaskList } from "../../interfaces";
 import Task from "@components/app/Task";
 
-export default function List({ id, title, tasks }: TaskList) {
+export default function List({ id, name, tasks }: TaskList) {
 	const [renderNewTask, setRenderNewTask] = useState(false);
 	const handleNewTask = () => {
 		setRenderNewTask(true);
-		tasks.push({ title: "", checked: false });
+		tasks.push({ name: "", checked: false });
 		setTimeout(() => {
 			setRenderNewTask(false);
 		}, 500);
@@ -30,7 +30,7 @@ export default function List({ id, title, tasks }: TaskList) {
 								justifyContent: "space-between",
 								alignItems: "center",
 							}}>
-							<Typography variant={"h5"}>{title}</Typography>
+							<Typography variant={"h5"}>{name}</Typography>
 							<IconButton aria-label="add item" color={"primary"} onClick={handleNewTask}>
 								<AddIcon />
 							</IconButton>

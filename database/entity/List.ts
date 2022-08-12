@@ -1,5 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./User";
+import { Task } from "./Task";
 
 @Entity()
 export class List {
@@ -15,4 +16,8 @@ export class List {
 
 	@Column({ nullable: true })
 	description: string;
+
+	@OneToMany(() => Task, task => task.listID)
+	@JoinColumn()
+	tasks: Task[];
 }

@@ -4,7 +4,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import { TaskItem } from "@interfaces/index";
 
-export default function Task({ id, title, checked }: TaskItem) {
+export default function Task({ id, name, checked }: TaskItem) {
 	const [detailsOpened, setDetailsOpened] = React.useState(false);
 	const handleOpen = () => setDetailsOpened(true);
 	const handleClose = () => {
@@ -12,8 +12,8 @@ export default function Task({ id, title, checked }: TaskItem) {
 		setDetailsOpened(false);
 	};
 
-	const [value, setValue] = React.useState({ title: title, checked: checked });
-	const [tempValue, setTempValue] = React.useState({ title: title, checked: checked });
+	const [value, setValue] = React.useState({ title: name, checked: checked });
+	const [tempValue, setTempValue] = React.useState({ title: name, checked: checked });
 	const [seed, setSeed] = React.useState(1);
 	const handleSave = () => {
 		value.title = tempValue.title;
@@ -30,7 +30,7 @@ export default function Task({ id, title, checked }: TaskItem) {
 						sx={{ width: "100%" }}
 						control={
 							<Checkbox
-								defaultChecked={value.checked}
+								checked={value.checked}
 								onChange={e => setValue({ ...value, checked: e.target.checked })}
 							/>
 						}

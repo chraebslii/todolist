@@ -7,11 +7,6 @@
 export type User = {
 	id: number;
 	name: string;
-};
-
-export type Account = {
-	id: number;
-	name: string;
 	userName: string;
 	password: string;
 	email: string;
@@ -19,12 +14,12 @@ export type Account = {
 
 export type TaskList = {
 	id?: number;
-	title: string;
+	name: string;
 	tasks?: TaskItem[];
 };
 
 export type TaskItem = {
 	id?: number;
-	title: string;
+	name: string;
 	checked: boolean;
 };

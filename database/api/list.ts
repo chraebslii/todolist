@@ -16,3 +16,11 @@ export const getSingleList = async (req: Request, res: Response) => {
 	});
 	await res.status(200).json(data);
 };
+
+export const getListsAndTasksWithUser = async (req: Request, res: Response) => {
+	const userID = req.params.id;
+	const data = await Connection.then(async database => {
+		return await database.getRepository(List).find({ where: { userID: userID }, relations: ["tasks"] });
+	});
+	await res.status(200).json(data);
+};
