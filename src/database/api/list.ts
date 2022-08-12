@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { List } from "../../database/entity/List";
+import { List } from "../entity/List";
 import { Connection } from "../connection";
 
 export const getAllLists = async (req: Request, res: Response) => {

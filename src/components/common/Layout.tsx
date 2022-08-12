@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import Meta from "@components/common/Meta";
-import Header from "@components/common/Header";
-import Footer from "@components/common/Footer";
+import Meta from "./Meta";
+import Header from "./Header";
+import Footer from "./Footer";
 
 //declare module "@mui/material/styles" {
 //	interface Theme {

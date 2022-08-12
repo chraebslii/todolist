@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Button, Checkbox, FormControlLabel, IconButton, Modal, Stack, TextField } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
-import { TaskItem } from "@interfaces/index";
+import { TaskItem } from "../../interfaces/index";
 
 export default function Task({ id, name, checked }: TaskItem) {
 	const [detailsOpened, setDetailsOpened] = React.useState(false);

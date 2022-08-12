@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User } from "../../database/entity/User";
+import { User } from "../entity/User";
 import { Connection } from "../connection";
 
 export const getAllUsers = async (req: Request, res: Response) => {

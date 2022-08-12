@@ -1,7 +1,7 @@
 {
 	"private": true,
 	"scripts": {
-		"db": "nodemon database/server.ts",
+		"db": "nodemon src/database/server.ts",
 		"dev": "next",
 		"build": "next build",
 		"start": "next start",

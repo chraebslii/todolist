@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Task } from "../../database/entity/Task";
+import { Task } from "../entity/Task";
 import { Connection } from "../connection";
 
 export const getAllTasks = async (req: Request, res: Response) => {

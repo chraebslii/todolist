@@ -26,23 +26,20 @@
 		"baseUrl": ".",
 		"paths": {
 			"@components/*": [
-				"components/*"
+				"src/components/*"
 			],
 			"@css/*": [
-				"css/*"
+				"src/css/*"
 			],
 			"@database/*": [
-				"database/*"
+				"src/database/*"
 			],
 			"@interfaces/*": [
-				"interfaces/*"
+				"src/interfaces/*"
 			],
 			"@pages/*": [
-				"pages/*"
+				"src/pages/*"
 			],
-			"@utils/*": [
-				"utils/*"
-			]
 		},
 	},
 	"include": [

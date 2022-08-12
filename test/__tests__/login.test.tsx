@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import Index from "@pages/index";
+import Login from "../../src/pages/login";
 
-describe("Index page", () => {
+describe("Login page", () => {
 	describe("UI", () => {
 		it("renders header", () => {
-			render(<Index />);
+			render(<Login />);
 
 			const header = screen.getAllByText(/Todolist/i);
 
@@ -14,16 +14,16 @@ describe("Index page", () => {
 			}
 		});
 		it("renders footer", () => {
-			render(<Index />);
+			render(<Login />);
 
 			const footer = screen.getByText(/chraebsli IT-Services/i);
 
 			expect(footer).toBeInTheDocument();
 		});
 		it("renders welcome", () => {
-			render(<Index />);
+			render(<Login />);
 
-			const main = screen.getByText(/Welcome to Todolist/i);
+			const main = screen.getByText(/Login/i);
 
 			expect(main).toBeInTheDocument();
 		});

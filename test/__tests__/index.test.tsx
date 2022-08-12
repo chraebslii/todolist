@@ -1,15 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import App from "@pages/app";
+import Index from "../../src/pages";
 
-describe("App page", () => {
-	beforeEach(() => {
-		fetchMock.doMock();
-	});
-
+describe("Index page", () => {
 	describe("UI", () => {
 		it("renders header", () => {
-			render(<App />);
+			render(<Index />);
 
 			const header = screen.getAllByText(/Todolist/i);
 
@@ -18,14 +14,18 @@ describe("App page", () => {
 			}
 		});
 		it("renders footer", () => {
-			render(<App />);
+			render(<Index />);
 
 			const footer = screen.getByText(/chraebsli IT-Services/i);
 
 			expect(footer).toBeInTheDocument();
 		});
-	});
-	describe("Functionality", () => {
-		it("", () => {});
+		it("renders welcome", () => {
+			render(<Index />);
+
+			const main = screen.getByText(/Welcome to Todolist/i);
+
+			expect(main).toBeInTheDocument();
+		});
 	});
 });
