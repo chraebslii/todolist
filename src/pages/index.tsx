@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import Layout from "../components/common/Layout";
+import Layout from "@components/Layout";
 
 export default class Index extends React.Component {
 	render() {
@@ -28,7 +28,7 @@ export default class Index extends React.Component {
 										<section>
 											<Stack spacing={3} direction={"row"}>
 												<Button
-													href={"/signup"}
+													href={"/auth?tab=signup"}
 													variant="contained"
 													size={"medium"}
 													color="primary"
@@ -36,7 +36,7 @@ export default class Index extends React.Component {
 													Get Started
 												</Button>
 												<Button
-													href={"/login"}
+													href={"/auth?tab=login"}
 													variant="outlined"
 													size={"medium"}
 													color="primary"

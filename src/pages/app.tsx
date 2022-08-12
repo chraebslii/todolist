@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Container, Stack } from "@mui/material";
-import Layout from "../components/common/Layout";
+import Layout from "@components/Layout";
 import List from "../components/app/List";
 import ListSkeleton from "../components/app/ListSkeleton";
-import { TaskList } from "../interfaces/index";
+import { TaskList } from "@interfaces/index";
 
 export default function App() {
 	const [data, setData] = useState<TaskList[] | null>(null);
