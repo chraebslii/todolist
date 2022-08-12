@@ -3,6 +3,7 @@ import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import Meta from "./common/Meta";
 import Header from "./common/Header";
 import Footer from "./common/Footer";
+import { CookieDisclaimer } from "@components/common/CookieDisclaimer";
 
 //declare module "@mui/material/styles" {
 //	interface Theme {
@@ -50,6 +51,7 @@ export default class Layout extends React.Component<{
 					<Header />
 					{this.props.children}
 					<Footer />
+					<CookieDisclaimer />
 				</ThemeProvider>
 			</>
 		);
