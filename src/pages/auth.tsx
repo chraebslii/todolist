@@ -38,7 +38,7 @@ function a11yProps(index: number) {
 	};
 }
 
-export default function BasicTabs() {
+export default function Auth({ setToken }: { setToken?: any }) {
 	const [value, setValue] = React.useState(0);
 	const router = useRouter();
 	const { tab } = router.query as { tab: "login" | "signup" };
@@ -73,7 +73,7 @@ export default function BasicTabs() {
 										</Tabs>
 									</Box>
 									<TabPanel value={value} index={0}>
-										<LoginTab />
+										<LoginTab setToken={setToken} />
 									</TabPanel>
 									<TabPanel value={value} index={1}>
 										<SignupTab />
@@ -87,4 +87,3 @@ export default function BasicTabs() {
 		</>
 	);
 }
-

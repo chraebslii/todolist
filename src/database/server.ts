@@ -1,6 +1,7 @@
 import { getAllUsers, getSingleUser } from "./api/user";
 import { getAllLists, getListsAndTasksWithUser, getSingleList } from "./api/list";
 import { getAllTasks, getSingleTask } from "./api/task";
+import { loginUser, loginUserTMP } from "./api/auth";
 
 const express = require("express");
 require("dotenv").config({ path: ".env.local" });
@@ -8,9 +9,14 @@ const cors = require("cors");
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 // init
 app.get("/", (req, res) => res.status(200).json({ status: "ok" }));
+
+// auth
+//app.post("/api/auth/login", loginUser);
+app.post("/api/auth/login", loginUserTMP);
 
 // users
 app.get("/api/user/all", getAllUsers);

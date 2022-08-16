@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import Meta from "./common/Meta";
 import Header from "./common/Header";
@@ -38,22 +38,17 @@ const defaultTheme = createTheme({
 	},
 });
 
-export default class Layout extends React.Component<{
-	children?: ReactNode;
-	title?: string;
-}> {
-	render() {
-		return (
-			<>
-				<ThemeProvider theme={defaultTheme}>
-					<CssBaseline />
-					<Meta title={this.props.title} />
-					<Header />
-					{this.props.children}
-					<Footer />
-					<CookieDisclaimer />
-				</ThemeProvider>
-			</>
-		);
-	}
+export default function Layout({ children, title }: { children?: ReactNode; title?: string }) {
+	return (
+		<>
+			<ThemeProvider theme={defaultTheme}>
+				<CssBaseline />
+				<Meta title={title} />
+				<Header />
+				{children}
+				<Footer />
+				<CookieDisclaimer />
+			</ThemeProvider>
+		</>
+	);
 }

@@ -1,15 +1,41 @@
+import { useState } from "react";
+import axios from "axios";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import LoginIcon from "@mui/icons-material/Login";
 
-export const LoginTab = () => {
+const login = async credentials => {
+	return await axios.post(`${process.env.API_URL}/auth/login`, credentials).then(res => res.data);
+};
+
+export const LoginTab = ({ setToken }: { setToken?: any }) => {
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+
+	const handleLogin = async e => {
+		e.preventDefault();
+		const response = await login({
+			email,
+			password,
+		});
+		setToken(response.token);
+		console.log(response);
+	};
+
 	return (
 		<>
 			<section>
-				<form action={""}>
+				<form>
 					<Stack direction={"column"} spacing={1}>
 						<Stack direction={"row"}>
-							<TextField type={"email"} name={"email"} id={"email"} label={"E-Mail"} fullWidth={true} />
+							<TextField
+								type={"email"}
+								name={"email"}
+								id={"email"}
+								label={"E-Mail"}
+								fullWidth={true}
+								onChange={e => setEmail(e.target.value)}
+							/>
 						</Stack>
 						<Stack direction={"row"}>
 							<TextField
@@ -17,6 +43,7 @@ export const LoginTab = () => {
 								name={"password"}
 								id={"password"}
 								label={"Password"}
+								onChange={e => setPassword(e.target.value)}
 								fullWidth={true}
 							/>
 						</Stack>
@@ -34,6 +61,7 @@ export const LoginTab = () => {
 								size={"large"}
 								color={"primary"}
 								endIcon={<LoginIcon />}
+								onClick={handleLogin}
 								fullWidth={true}>
 								Login
 							</Button>

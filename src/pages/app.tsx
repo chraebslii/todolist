@@ -4,15 +4,22 @@ import Layout from "@components/Layout";
 import List from "../components/app/List";
 import ListSkeleton from "../components/app/ListSkeleton";
 import { TaskList } from "@interfaces/index";
+import Auth from "@pages/auth";
 
 export default function App() {
 	const [data, setData] = useState<TaskList[] | null>(null);
 	const [isLoading, setLoading] = useState(false);
 
+	const [token, setToken] = useState();
+	if (!token) {
+		return <Auth setToken={setToken} />;
+	}
+
+	console.log(token);
+
 	useEffect(() => {
 		const userID = 1;
 		setLoading(true);
-		//fetch("http://localhost:3001/api/list/user/1")
 		fetch(`${process.env.API_URL}/list/user/${userID}`)
 			.then(res => res.json())
 			.then(data => {
