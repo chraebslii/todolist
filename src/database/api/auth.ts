@@ -13,18 +13,26 @@ export const loginUser = async (req: Request, res: Response) => {
 		});
 	});
 	if (data && data.password === req.body.password) {
+		await Connection.then(async database => {
+			await database.getRepository(User).update(data.id, {
+				lastLogin: new Date().toISOString(),
+			});
+		});
 		await res.status(200).json({ status: "ok", token: createToken(data) });
 	} else {
 		await res.status(200).json({ status: "error", error: "Invalid credentials" });
 	}
 };
 
-export const loginUserTMP = async (req: Request, res: Response) => {
-	await res.status(200).json({ status: "ok", token: createToken(req.body) });
-};
-
 const secret = "secret";
 const createToken = (data: User) => {
-	const token = jwt.sign({ email: data.email, password: data.password }, secret, { expiresIn: "1h" });
-	return token;
+	return jwt.sign(
+		{
+			email: data.email,
+			password: data.password,
+			lastLogin: new Date(data.lastLogin).getTime(),
+		},
+		secret,
+		{ expiresIn: "1h" }
+	);
 };

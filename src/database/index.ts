@@ -43,11 +43,13 @@ const getUsers = () => {
 	user1.username = "user1";
 	user1.email = "user1@example.com";
 	user1.password = "user1";
+	user1.lastLogin = new Date().toISOString();
 
 	const user2 = new User();
 	user2.username = "user2";
 	user2.email = "user2@example.com";
 	user2.password = "user2";
+	user2.lastLogin = new Date().toISOString();
 
 	return [user1, user2];
 };

@@ -8,7 +8,7 @@ const login = async credentials => {
 	return await axios.post(`${process.env.API_URL}/auth/login`, credentials).then(res => res.data);
 };
 
-export const LoginTab = ({ setToken }: { setToken?: any }) => {
+export const LoginTab = ({ setToken }: { setToken: any }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
@@ -19,7 +19,6 @@ export const LoginTab = ({ setToken }: { setToken?: any }) => {
 			password,
 		});
 		setToken(response.token);
-		console.log(response);
 	};
 
 	return (
