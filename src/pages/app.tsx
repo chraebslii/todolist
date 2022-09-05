@@ -13,17 +13,19 @@ export default function App() {
 
 	const [cookies, setCookie, removeCookie] = useCookies(["token", "user"]);
 	const authToken = cookies.token;
-	const userID = +cookies.user;
+	const userID = cookies.user;
 
 	const router = useRouter();
 	useEffect(() => {
-		setLoading(true);
-		fetch(`${process.env.API_URL}/list/user/${userID}`)
-			.then(res => res.json())
-			.then(data => {
-				setData(data);
-				setLoading(false);
-			});
+		if (authToken && userID) {
+			setLoading(true);
+			fetch(`${process.env.API_URL}/list/user/${userID}`)
+				.then(res => res.json())
+				.then(data => {
+					setData(data);
+					setLoading(false);
+				});
+		}
 	}, [userID]);
 
 	useEffect(() => {
