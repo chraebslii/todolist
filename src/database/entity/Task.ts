@@ -3,7 +3,7 @@ import { List } from "./List";
 
 @Entity()
 export class Task {
-	@PrimaryGeneratedColumn()
+	@PrimaryGeneratedColumn("uuid")
 	id: number;
 
 	@Column()
@@ -16,6 +16,6 @@ export class Task {
 	description: string;
 
 	@ManyToOne(() => List)
-	@Column()
+	@Column({ type: "uuid" })
 	listID: number;
 }

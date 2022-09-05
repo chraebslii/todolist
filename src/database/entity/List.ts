@@ -4,11 +4,11 @@ import { Task } from "./Task";
 
 @Entity()
 export class List {
-	@PrimaryGeneratedColumn()
+	@PrimaryGeneratedColumn("uuid")
 	id: number;
 
 	@ManyToOne(() => User)
-	@Column()
+	@Column({ type: "uuid" })
 	userID: number;
 
 	@Column()

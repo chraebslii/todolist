@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // init
-app.get("/", (req, res) => res.status(200).json({ status: "ok" }));
+app.get("/", (req, res) => res.status(200).json({ code: 200, message: "Welcome to the API" }));
 
 // auth
 app.post("/api/auth/login", loginUser);
@@ -25,7 +25,7 @@ app.get("/api/user/id/:id", getSingleUser);
 // lists
 app.get("/api/list/all", getAllLists);
 app.get("/api/list/id/:id", getSingleList);
-app.get("/api/list/user/:userID", getListsAndTasksWithUser);
+app.get("/api/list/user/:id", getListsAndTasksWithUser);
 
 // tasks
 app.get("/api/task/all", getAllTasks);

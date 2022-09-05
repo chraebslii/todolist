@@ -5,22 +5,26 @@ import { Connection } from "../connection";
 const jwt = require("jsonwebtoken");
 
 export const loginUser = async (req: Request, res: Response) => {
-	const data = await Connection.then(async database => {
-		return await database.getRepository(User).findOne({
-			where: {
-				email: req.body.email,
-			},
-		});
-	});
-	if (data && data.password === req.body.password) {
-		await Connection.then(async database => {
-			await database.getRepository(User).update(data.id, {
-				lastLogin: new Date().toISOString(),
+	try {
+		const data = await Connection.then(async database => {
+			return await database.getRepository(User).findOne({
+				where: {
+					email: req.body.email,
+				},
 			});
 		});
-		await res.status(200).json({ status: "ok", token: createToken(data), user: data.id });
-	} else {
-		await res.status(200).json({ status: "error", error: "Invalid credentials" });
+		if (data && data.password === req.body.password) {
+			await Connection.then(async database => {
+				await database.getRepository(User).update(data.id, {
+					lastLogin: new Date().toISOString(),
+				});
+			});
+			await res.status(200).json({ code: 200, status: "ok", token: createToken(data), user: data.id });
+		} else {
+			await res.status(200).json({ status: "error", error: "Invalid credentials" });
+		}
+	} catch (error) {
+		await res.status(200).json({ status: "error", error: "something went wrong" });
 	}
 };
 
@@ -38,7 +42,7 @@ export const registerUser = async (req: Request, res: Response) => {
 			},
 		});
 	});
-	await res.status(200).json({ status: "ok", token: createToken(data), user: data.id });
+	await res.status(200).json({ code: 200, status: "ok", token: createToken(data), user: data.id });
 };
 
 const secret = "secret";
