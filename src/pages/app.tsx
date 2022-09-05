@@ -4,18 +4,19 @@ import Layout from "@components/Layout";
 import List from "../components/app/List";
 import ListSkeleton from "../components/app/ListSkeleton";
 import { TaskList } from "@interfaces/index";
-import Auth from "@pages/auth";
 import { useCookies } from "react-cookie";
+import { useRouter } from "next/router";
 
 export default function App() {
 	const [data, setData] = useState<TaskList[] | null>(null);
 	const [isLoading, setLoading] = useState(false);
 
-	const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+	const [cookies, setCookie, removeCookie] = useCookies(["token", "user"]);
 	const authToken = cookies.token;
+	const userID = +cookies.user;
 
+	const router = useRouter();
 	useEffect(() => {
-		const userID = 1;
 		setLoading(true);
 		fetch(`${process.env.API_URL}/list/user/${userID}`)
 			.then(res => res.json())
@@ -23,29 +24,28 @@ export default function App() {
 				setData(data);
 				setLoading(false);
 			});
-	}, []);
+	}, [userID]);
 
-	return (
+	useEffect(() => {
+		!authToken && router.push(`/auth?source=${router.pathname}`);
+	}, [authToken, router]);
+	return authToken ? (
 		<NoSsr>
-			{!authToken ? (
-				<Auth />
-			) : (
-				<Layout title={"App"}>
-					<Box>
-						<main>
-							<Container sx={{ padding: "2rem 0" }}>
-								<Stack spacing={5} direction={"column"} alignItems={"center"}>
-									{isLoading ? (
-										<ListSkeleton />
-									) : (
-										data && data.map(list => <List key={list.id} {...list} />)
-									)}
-								</Stack>
-							</Container>
-						</main>
-					</Box>
-				</Layout>
-			)}
+			<Layout title={"App"}>
+				<Box>
+					<main>
+						<Container sx={{ padding: "2rem 0" }}>
+							<Stack spacing={5} direction={"column"} alignItems={"center"}>
+								{isLoading ? (
+									<ListSkeleton />
+								) : (
+									data && data.map(list => <List key={list.id} {...list} />)
+								)}
+							</Stack>
+						</Container>
+					</main>
+				</Box>
+			</Layout>
 		</NoSsr>
-	);
+	) : null;
 }

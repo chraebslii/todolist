@@ -28,7 +28,7 @@ export default class Index extends React.Component {
 										<section>
 											<Stack spacing={3} direction={"row"}>
 												<Button
-													href={"/auth?tab=signup"}
+													href={"/auth?tab=signup&source=/"}
 													variant="contained"
 													size={"medium"}
 													color="primary"
@@ -36,7 +36,7 @@ export default class Index extends React.Component {
 													Get Started
 												</Button>
 												<Button
-													href={"/auth?tab=login"}
+													href={"/auth?tab=login&source=/"}
 													variant="outlined"
 													size={"medium"}
 													color="primary"

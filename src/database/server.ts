@@ -1,11 +1,11 @@
 import { getAllUsers, getSingleUser } from "./api/user";
 import { getAllLists, getListsAndTasksWithUser, getSingleList } from "./api/list";
 import { getAllTasks, getSingleTask } from "./api/task";
-import { loginUser } from "./api/auth";
+import { loginUser, registerUser } from "./api/auth";
 
 const express = require("express");
-require("dotenv").config({ path: ".env" });
 const cors = require("cors");
+require("dotenv").config({ path: ".env" });
 
 const app = express();
 app.use(cors());
@@ -15,8 +15,8 @@ app.use(express.json());
 app.get("/", (req, res) => res.status(200).json({ status: "ok" }));
 
 // auth
-//app.post("/api/auth/login", loginUser);
 app.post("/api/auth/login", loginUser);
+app.post("/api/auth/signup", registerUser);
 
 // users
 app.get("/api/user/all", getAllUsers);

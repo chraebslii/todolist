@@ -8,7 +8,15 @@ const login = async credentials => {
 	return await axios.post(`${process.env.API_URL}/auth/login`, credentials).then(res => res.data);
 };
 
-export const LoginTab = ({ setToken }: { setToken: any }) => {
+export const LoginTab = ({
+	setToken,
+	setUser,
+	redirect,
+}: {
+	setToken: (string) => void;
+	setUser: (string) => void;
+	redirect: () => void;
+}) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
@@ -19,6 +27,8 @@ export const LoginTab = ({ setToken }: { setToken: any }) => {
 			password,
 		});
 		setToken(response.token);
+		setUser(response.user);
+		redirect();
 	};
 
 	return (

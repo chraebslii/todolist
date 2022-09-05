@@ -18,10 +18,27 @@ export const loginUser = async (req: Request, res: Response) => {
 				lastLogin: new Date().toISOString(),
 			});
 		});
-		await res.status(200).json({ status: "ok", token: createToken(data) });
+		await res.status(200).json({ status: "ok", token: createToken(data), user: data.id });
 	} else {
 		await res.status(200).json({ status: "error", error: "Invalid credentials" });
 	}
+};
+
+export const registerUser = async (req: Request, res: Response) => {
+	const data = await Connection.then(async database => {
+		await database.getRepository(User).insert({
+			username: req.body.username,
+			email: req.body.email,
+			password: req.body.password,
+			lastLogin: new Date().toISOString(),
+		});
+		return await database.getRepository(User).findOne({
+			where: {
+				email: req.body.email,
+			},
+		});
+	});
+	await res.status(200).json({ status: "ok", token: createToken(data), user: data.id });
 };
 
 const secret = "secret";

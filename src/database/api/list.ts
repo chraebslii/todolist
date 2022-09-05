@@ -18,7 +18,8 @@ export const getSingleList = async (req: Request, res: Response) => {
 };
 
 export const getListsAndTasksWithUser = async (req: Request, res: Response) => {
-	const userID = req.params.id;
+	const userID = req.params.userID;
+	console.log(userID);
 	const data = await Connection.then(async database => {
 		return await database.getRepository(List).find({ where: { userID: userID }, relations: ["tasks"] });
 	});

@@ -43,10 +43,14 @@ export default function Auth() {
 	const [value, setValue] = React.useState(0);
 	const router = useRouter();
 	const { tab } = router.query as { tab: "login" | "signup" };
+	const source = router.query.source as string;
 
-	const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+	const [cookies, setCookie, removeCookie] = useCookies(["token", "user"]);
 	const setToken = (token: string) => {
 		setCookie("token", token, { path: "/" });
+	};
+	const setUser = (user: string) => {
+		setCookie("user", user, { path: "/" });
 	};
 
 	useEffect(() => {
@@ -55,6 +59,10 @@ export default function Auth() {
 
 	const handleChange = (event: React.SyntheticEvent, newValue: number) => {
 		setValue(newValue);
+	};
+
+	const redirect = () => {
+		router.push(source || "/app");
 	};
 
 	return (
@@ -79,10 +87,10 @@ export default function Auth() {
 										</Tabs>
 									</Box>
 									<TabPanel value={value} index={0}>
-										<LoginTab setToken={setToken} />
+										<LoginTab setToken={setToken} setUser={setUser} redirect={redirect} />
 									</TabPanel>
 									<TabPanel value={value} index={1}>
-										<SignupTab />
+										<SignupTab setToken={setToken} setUser={setUser} redirect={redirect} />
 									</TabPanel>
 								</Box>
 							</Box>
