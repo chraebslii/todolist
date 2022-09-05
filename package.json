@@ -28,7 +28,7 @@
 		"react-dom": "^18.2.0",
 		"react-router-dom": "^6.3.0",
 		"reflect-metadata": "^0.1.13",
-		"sass": "^1.54.3",
+		"sass": "^1.54.4",
 		"typeorm": "^0.3.7",
 		"typescript": " 4.7.4"
 	},
