@@ -7,11 +7,11 @@ import { TaskList } from "@interfaces/index";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 
-export default function App() {
-	const [data, setData] = useState<TaskList[] | null>(null);
-	const [isLoading, setLoading] = useState(false);
+export default function App(){
+	const [ data, setData ] = useState<TaskList[] | null>(null);
+	const [ isLoading, setLoading ] = useState(false);
 
-	const [cookies, setCookie, removeCookie] = useCookies(["token", "user"]);
+	const [ cookies ] = useCookies([ "token", "user" ]);
 	const authToken = cookies.token;
 	const userID = cookies.user;
 
@@ -19,30 +19,30 @@ export default function App() {
 	useEffect(() => {
 		if (authToken && userID) {
 			setLoading(true);
-			fetch(`${process.env.API_URL}/list/user/${userID}`)
+			fetch(`${ process.env.API_URL }/list/user/${ userID }`)
 				.then(res => res.json())
 				.then(data => {
 					setData(data);
 					setLoading(false);
 				});
 		}
-	}, [userID]);
+	}, [ userID ]);
 
 	useEffect(() => {
-		!authToken && router.push(`/auth?source=${router.pathname}`);
-	}, [authToken, router]);
+		!authToken && router.push(`/auth?source=${ router.pathname }`);
+	}, [ authToken, router ]);
 	return authToken ? (
 		<NoSsr>
-			<Layout title={"App"}>
+			<Layout title={ "App" }>
 				<Box>
 					<main>
-						<Container sx={{ padding: "2rem 0" }}>
-							<Stack spacing={5} direction={"column"} alignItems={"center"}>
-								{isLoading ? (
+						<Container sx={ { padding: "2rem 0" } }>
+							<Stack spacing={ 5 } direction={ "column" } alignItems={ "center" }>
+								{ isLoading ? (
 									<ListSkeleton />
 								) : (
-									data && data.map(list => <List key={list.id} {...list} />)
-								)}
+									data && data.map(list => <List key={ list.id } { ...list } />)
+								) }
 							</Stack>
 						</Container>
 					</main>

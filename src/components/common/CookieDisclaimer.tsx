@@ -4,8 +4,8 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import CookieIcon from "@mui/icons-material/Cookie";
 
 export const CookieDisclaimer = () => {
-	const [cookies, setCookie, removeCookie] = useCookies(["cookiesAccepted"]);
-	const [showDisclaimer, setShowDisclaimer] = React.useState(false);
+	const [ cookies, setCookie ] = useCookies([ "cookiesAccepted" ]);
+	const [ showDisclaimer, setShowDisclaimer ] = React.useState(false);
 
 	const acceptCookie = () => {
 		setCookie("cookiesAccepted", true, { path: "/", maxAge: 60 * 60 * 24 * 7 });
@@ -16,18 +16,18 @@ export const CookieDisclaimer = () => {
 		!cookies.cookiesAccepted
 			? setShowDisclaimer(true)
 			: (setShowDisclaimer(false),
-			  setCookie("cookiesAccepted", true, {
+				setCookie("cookiesAccepted", true, {
 					path: "/",
 					maxAge: 60 * 60 * 24 * 7,
-			  }));
-	}, [cookies]);
+				}));
+	}, [ cookies ]);
 
 	return (
 		<>
 			<Box
-				display={showDisclaimer ? "block" : "none"}
-				className={"cookie-discalimer"}
-				sx={{
+				display={ showDisclaimer ? "block" : "none" }
+				className={ "cookie-discalimer" }
+				sx={ {
 					maxWidth: "20rem",
 					zIndex: "1",
 					padding: "1rem",
@@ -38,23 +38,23 @@ export const CookieDisclaimer = () => {
 					borderRadius: "1rem",
 					border: ".2rem solid",
 					borderColor: "primary.main",
-				}}>
-				<Stack spacing={1} direction={"column"}>
+				} }>
+				<Stack spacing={ 1 } direction={ "column" }>
 					<CookieIcon
-						sx={{
+						sx={ {
 							width: "3rem",
 							height: "3rem",
-						}}
+						} }
 					/>
 					<Typography
-						variant={"h6"}
-						component={"span"}
-						sx={{
+						variant={ "h6" }
+						component={ "span" }
+						sx={ {
 							lineBreak: "auto",
-						}}>
+						} }>
 						This website uses cookies to enhance the user experience.
 					</Typography>
-					<Button variant={"contained"} color={"primary"} onClick={acceptCookie}>
+					<Button variant={ "contained" } color={ "primary" } onClick={ acceptCookie }>
 						Accept
 					</Button>
 				</Stack>

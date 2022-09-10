@@ -8,51 +8,51 @@ const links = [
 ];
 
 export default class Footer extends React.Component {
-	render() {
+	render(){
 		return (
 			<>
-				<div className={"footer-space"}></div>
+				<div className={ "footer-space" }></div>
 				<Box
-					sx={{
+					sx={ {
 						bottom: 0,
 						position: "absolute",
 						width: "100%",
 						padding: "1rem 0",
 						backgroundColor: "primary.main",
-					}}>
+					} }>
 					<footer>
 						<nav>
 							<Stack
-								direction={"column"}
-								className={"text-center"}
-								sx={{
+								direction={ "column" }
+								className={ "text-center" }
+								sx={ {
 									textAlign: "center",
 									color: "text.secondary",
-								}}>
+								} }>
 								<Stack
-									gap={2}
-									direction={"row"}
-									className={"d-flex justify-content-center"}
-									sx={{
+									gap={ 2 }
+									direction={ "row" }
+									className={ "d-flex justify-content-center" }
+									sx={ {
 										display: "flex",
 										justifyContent: "center",
-									}}>
-									{links.map((link, index) => (
+									} }>
+									{ links.map((link, index) => (
 										<>
 											<Typography
-												component={"a"}
-												href={link.href}
-												sx={{
+												component={ "a" }
+												href={ link.href }
+												sx={ {
 													color: "text.secondary",
-												}}>
-												{link.label}
+												} }>
+												{ link.label }
 											</Typography>
-											{index < links.length - 1 && <span>|</span>}
+											{ index < links.length - 1 && <span>|</span> }
 										</>
-									))}
+									)) }
 								</Stack>
-								<span className={"text-sec copyright"}>
-									&copy; {new Date().getFullYear()} chraebsli IT-Services
+								<span className={ "text-sec copyright" }>
+									&copy; { new Date().getFullYear() } chraebsli IT-Services
 								</span>
 							</Stack>
 						</nav>

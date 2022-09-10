@@ -5,42 +5,42 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Layout from "@components/Layout";
 
 export default class Index extends React.Component {
-	render() {
+	render(){
 		return (
 			<>
-				<Layout title={"Index"}>
+				<Layout title={ "Index" }>
 					<Box>
 						<main>
-							<Container sx={{ padding: "2rem 0" }}>
-								<Stack spacing={5} direction={"column"}>
+							<Container sx={ { padding: "2rem 0" } }>
+								<Stack spacing={ 5 } direction={ "column" }>
 									<Box>
 										<section>
-											<Typography variant="h3" component={"span"}>
+											<Typography variant="h3" component={ "span" }>
 												Welcome to Todolist
 											</Typography>
-											<Typography variant="h4" component={"span"}>
-												{" "}
+											<Typography variant="h4" component={ "span" }>
+												{ " " }
 												- the best todolist ever!
 											</Typography>
 										</section>
 									</Box>
 									<Box>
 										<section>
-											<Stack spacing={3} direction={"row"}>
+											<Stack spacing={ 3 } direction={ "row" }>
 												<Button
-													href={"/auth?tab=signup&source=/"}
+													href={ "/auth?tab=signup&source=/" }
 													variant="contained"
-													size={"medium"}
+													size={ "medium" }
 													color="primary"
-													endIcon={<KeyboardArrowRightIcon />}>
+													endIcon={ <KeyboardArrowRightIcon /> }>
 													Get Started
 												</Button>
 												<Button
-													href={"/auth?tab=login&source=/"}
+													href={ "/auth?tab=login&source=/" }
 													variant="outlined"
-													size={"medium"}
+													size={ "medium" }
 													color="primary"
-													endIcon={<AccountCircleIcon />}>
+													endIcon={ <AccountCircleIcon /> }>
 													or Login
 												</Button>
 											</Stack>

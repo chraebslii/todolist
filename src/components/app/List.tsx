@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Container, Divider, IconButton, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { TaskList } from "../../interfaces/index";
+import { TaskList } from "@interfaces/index";
 import Task from "./Task";
 
-export default function List({ id, name, tasks }: TaskList) {
-	const [renderNewTask, setRenderNewTask] = useState(false);
+export default function List({ id, name, tasks }: TaskList){
+	const [ , setRenderNewTask ] = useState(false);
 	const handleNewTask = () => {
 		setRenderNewTask(true);
 		tasks.push({ name: "", checked: false });
@@ -17,21 +17,21 @@ export default function List({ id, name, tasks }: TaskList) {
 	return (
 		<>
 			<Container
-				maxWidth={"md"}
-				sx={{
+				maxWidth={ "md" }
+				sx={ {
 					backgroundColor: "background.paper",
-				}}>
-				<Stack spacing={3} direction={"column"} sx={{ padding: "1rem 0" }}>
+				} }>
+				<Stack spacing={ 3 } direction={ "column" } sx={ { padding: "1rem 0" } }>
 					<section>
 						<Stack
-							direction={"row"}
-							spacing={5}
-							sx={{
+							direction={ "row" }
+							spacing={ 5 }
+							sx={ {
 								justifyContent: "space-between",
 								alignItems: "center",
-							}}>
-							<Typography variant={"h5"}>{name}</Typography>
-							<IconButton aria-label="add item" color={"primary"} onClick={handleNewTask}>
+							} }>
+							<Typography variant={ "h5" }>{ name }</Typography>
+							<IconButton aria-label="add item" color={ "primary" } onClick={ handleNewTask }>
 								<AddIcon />
 							</IconButton>
 						</Stack>
@@ -39,28 +39,28 @@ export default function List({ id, name, tasks }: TaskList) {
 					</section>
 
 					<section>
-						<Stack spacing={3} direction={"column"}>
-							{tasks &&
+						<Stack spacing={ 3 } direction={ "column" }>
+							{ tasks &&
 								tasks.map(task => {
 									if (!task.checked) {
-										return <Task {...task} key={task.id} />;
+										return <Task { ...task } key={ task.id } />;
 									}
-								})}
+								}) }
 						</Stack>
 					</section>
 
 					<section>
 						<details>
-							<summary className={"no-marker"}>
+							<summary className={ "no-marker" }>
 								<Divider>show done items</Divider>
 							</summary>
-							<Stack spacing={3} direction={"column"}>
-								{tasks &&
+							<Stack spacing={ 3 } direction={ "column" }>
+								{ tasks &&
 									tasks.map(task => {
 										if (task.checked) {
-											return <Task {...task} key={task.id} />;
+											return <Task { ...task } key={ task.id } />;
 										}
-									})}
+									}) }
 							</Stack>
 						</details>
 					</section>

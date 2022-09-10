@@ -28,11 +28,8 @@
 			"@components/*": [
 				"src/components/*"
 			],
-			"@css/*": [
-				"src/css/*"
-			],
-			"@database/*": [
-				"src/database/*"
+			"@styles/*": [
+				"src/styles/*"
 			],
 			"@interfaces/*": [
 				"src/interfaces/*"
