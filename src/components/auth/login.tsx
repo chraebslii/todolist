@@ -47,61 +47,59 @@ export const LoginTab = ({
 	};
 
 	return (
-		<>
-			<section>
-				<form>
-					<Stack direction={ "column" } spacing={ 1 }>
-						<Stack direction={ "row" }>
-							<TextField
-								type={ "email" }
-								name={ "email" }
-								id={ "email" }
-								label={ "E-Mail" }
-								error={ !emailMatches && email.length > 0 }
-								onChange={ (e) => setEmail(e.target.value) }
-								fullWidth
-							/>
-						</Stack>
-						<Stack direction={ "row" }>
-							<TextField
-								type={ "password" }
-								name={ "password" }
-								id={ "password" }
-								label={ "Password" }
-								error={ !passwordMatches && password.length > 0 }
-								onChange={ (e) => setPassword(e.target.value) }
-								fullWidth
-							/>
-						</Stack>
-						<Stack direction={ "row" } spacing={ 3 }>
-							<Button
-								variant={ "outlined" }
-								size={ "large" }
-								color={ "primary" }
-								endIcon={ <CloseIcon /> }
-								fullWidth
-							>
-								cancel
-							</Button>
-							<Button
-								variant={ "contained" }
-								size={ "large" }
-								color={ "primary" }
-								endIcon={ <LoginIcon /> }
-								onClick={ handleLogin }
-								disabled={ !emailMatches || !passwordMatches }
-								fullWidth
-							>
-								Login
-							</Button>
-						</Stack>
-						<Box>
-							<span>* Pflichtfeld</span>
-						</Box>
-						{ error && <Alert severity={ "error" }>{ error }</Alert> }
+		<section>
+			<form>
+				<Stack direction={ "column" } spacing={ 1 }>
+					<Stack direction={ "row" }>
+						<TextField
+							type={ "email" }
+							name={ "email" }
+							id={ "email" }
+							label={ "E-Mail" }
+							error={ !emailMatches && email.length > 0 }
+							onChange={ (e) => setEmail(e.target.value) }
+							fullWidth
+						/>
 					</Stack>
-				</form>
-			</section>
-		</>
+					<Stack direction={ "row" }>
+						<TextField
+							type={ "password" }
+							name={ "password" }
+							id={ "password" }
+							label={ "Password" }
+							error={ !passwordMatches && password.length > 0 }
+							onChange={ (e) => setPassword(e.target.value) }
+							fullWidth
+						/>
+					</Stack>
+					<Stack direction={ "row" } spacing={ 3 }>
+						<Button
+							variant={ "outlined" }
+							size={ "large" }
+							color={ "primary" }
+							endIcon={ <CloseIcon /> }
+							fullWidth
+						>
+							cancel
+						</Button>
+						<Button
+							variant={ "contained" }
+							size={ "large" }
+							color={ "primary" }
+							endIcon={ <LoginIcon /> }
+							onClick={ handleLogin }
+							disabled={ !emailMatches || !passwordMatches }
+							fullWidth
+						>
+							Login
+						</Button>
+					</Stack>
+					<Box>
+						<span>* Pflichtfeld</span>
+					</Box>
+					{ error && <Alert severity={ "error" }>{ error }</Alert> }
+				</Stack>
+			</form>
+		</section>
 	);
 };

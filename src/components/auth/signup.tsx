@@ -52,78 +52,76 @@ export const SignupTab = ({
 	};
 
 	return (
-		<>
-			<section>
-				<form action={ "" }>
-					<Stack direction={ "column" } spacing={ 1 }>
-						<Stack direction={ "row" }>
-							<TextField
-								name={ "username" }
-								id={ "username" }
-								label={ "Username" }
-								error={ !usernameMatches && username.length > 0 }
-								onChange={ e => setUsername(e.target.value) }
-								fullWidth
-							/>
-						</Stack>
-						<Stack direction={ "row" }>
-							<TextField
-								type={ "email" }
-								name={ "email" }
-								id={ "email" }
-								label={ "E-Mail" }
-								error={ !emailMatches && email.length > 0 }
-								onChange={ e => setEmail(e.target.value) }
-								fullWidth
-							/>
-						</Stack>
-						<Stack direction={ "row" } spacing={ 1 }>
-							<TextField
-								type={ "password" }
-								name={ "password" }
-								id={ "password" }
-								label={ "Password" }
-								error={ !passwordMatches && password.length > 0 }
-								onChange={ e => setPassword(e.target.value) }
-								fullWidth
-							/>
-							<TextField
-								type={ "password" }
-								name={ "repeat-password" }
-								id={ "repeat-password" }
-								label={ "repeat Password" }
-								error={ password !== passwordConfirm && passwordConfirm.length > 0 }
-								onChange={ e => setPasswordConfirm(e.target.value) }
-								fullWidth
-							/>
-						</Stack>
-						<Stack direction={ "row" } spacing={ 1 }>
-							<Button
-								variant={ "outlined" }
-								size={ "large" }
-								color={ "primary" }
-								endIcon={ <CloseIcon /> }
-								fullWidth>
-								cancel
-							</Button>
-							<Button
-								variant={ "contained" }
-								size={ "large" }
-								color={ "primary" }
-								endIcon={ <PersonAddIcon /> }
-								onClick={ handleSignup }
-								disabled={ !emailMatches || !passwordMatches || !usernameMatches || password !== passwordConfirm }
-								fullWidth>
-								Signup
-							</Button>
-						</Stack>
-						<Box>
-							<span>* Pflichtfeld</span>
-						</Box>
-						{ error && <Alert severity={ "error" }>{ error }</Alert> }
+		<section>
+			<form action={ "" }>
+				<Stack direction={ "column" } spacing={ 1 }>
+					<Stack direction={ "row" }>
+						<TextField
+							name={ "username" }
+							id={ "username" }
+							label={ "Username" }
+							error={ !usernameMatches && username.length > 0 }
+							onChange={ e => setUsername(e.target.value) }
+							fullWidth
+						/>
 					</Stack>
-				</form>
-			</section>
-		</>
+					<Stack direction={ "row" }>
+						<TextField
+							type={ "email" }
+							name={ "email" }
+							id={ "email" }
+							label={ "E-Mail" }
+							error={ !emailMatches && email.length > 0 }
+							onChange={ e => setEmail(e.target.value) }
+							fullWidth
+						/>
+					</Stack>
+					<Stack direction={ "row" } spacing={ 1 }>
+						<TextField
+							type={ "password" }
+							name={ "password" }
+							id={ "password" }
+							label={ "Password" }
+							error={ !passwordMatches && password.length > 0 }
+							onChange={ e => setPassword(e.target.value) }
+							fullWidth
+						/>
+						<TextField
+							type={ "password" }
+							name={ "repeat-password" }
+							id={ "repeat-password" }
+							label={ "repeat Password" }
+							error={ password !== passwordConfirm && passwordConfirm.length > 0 }
+							onChange={ e => setPasswordConfirm(e.target.value) }
+							fullWidth
+						/>
+					</Stack>
+					<Stack direction={ "row" } spacing={ 1 }>
+						<Button
+							variant={ "outlined" }
+							size={ "large" }
+							color={ "primary" }
+							endIcon={ <CloseIcon /> }
+							fullWidth>
+							cancel
+						</Button>
+						<Button
+							variant={ "contained" }
+							size={ "large" }
+							color={ "primary" }
+							endIcon={ <PersonAddIcon /> }
+							onClick={ handleSignup }
+							disabled={ !emailMatches || !passwordMatches || !usernameMatches || password !== passwordConfirm }
+							fullWidth>
+							Signup
+						</Button>
+					</Stack>
+					<Box>
+						<span>* Pflichtfeld</span>
+					</Box>
+					{ error && <Alert severity={ "error" }>{ error }</Alert> }
+				</Stack>
+			</form>
+		</section>
 	);
 };
