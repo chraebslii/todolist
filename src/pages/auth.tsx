@@ -5,6 +5,7 @@ import { LoginTab } from "@components/auth/login";
 import { SignupTab } from "@components/auth/signup";
 import { useRouter } from "next/router";
 import { useCookies } from "react-cookie";
+import { User } from "@interfaces/entitys";
 
 interface TabPanelProps {
 	children?: React.ReactNode;
@@ -44,12 +45,9 @@ export default function Auth(){
 	const router = useRouter();
 	const { tab } = router.query as { tab: "login" | "signup" };
 	const [ , setCookie ] = useCookies([ "token", "user" ]);
-	const setToken = (token: string) => {
-		setCookie("token", token, { path: "/" });
-	};
-	const setUser = (user: string) => {
-		setCookie("user", user, { path: "/" });
-	};
+
+	const setToken = (token: string) => setCookie("token", token, { path: "/" });
+	const setUser = (user: User) => setCookie("user", JSON.stringify(user), { path: "/" });
 
 	useEffect(() => {
 		tab ? setValue(TabIndex[tab]) : setValue(TabIndex.login);

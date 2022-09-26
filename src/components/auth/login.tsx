@@ -1,34 +1,49 @@
 import { useState } from "react";
 import axios from "axios";
-import { Box, Button, Stack, TextField } from "@mui/material";
+import { Alert, Box, Button, Stack, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import LoginIcon from "@mui/icons-material/Login";
+import { User } from "@interfaces/entitys";
 
-const login = async credentials => {
-	return await axios.post(`${ process.env.API_URL }/auth/login`, credentials).then(res => res.data);
+const login = async (credentials) => {
+	const { email, password } = credentials;
+	const user: User = await axios.get(`${ process.env.API_URL }/user?email=${ email }`).then(res => res.data);
+	try {
+		if (user.password === password) {
+			const session = await axios.post(`${ process.env.API_URL }/session`, { id: user.id }).then(res => res.data);
+			console.log({ user: user, token: session.token });
+			return { user: user, token: session.token };
+		} else if (!user) throw new Error("User not found");
+		else throw new Error("Wrong password");
+	} catch (e) {
+		return { error: { message: e.message } };
+	}
 };
 
 export const LoginTab = ({
-	setToken,
-	setUser,
-	redirect,
+	setToken, setUser, redirect,
 }: {
-	setToken: (string) => void;
-	setUser: (string) => void;
-	redirect: () => void;
+	setToken: (string) => void; setUser: (string) => void; redirect: () => void;
 }) => {
 	const [ email, setEmail ] = useState("");
 	const [ password, setPassword ] = useState("");
+	const [ error, setError ] = useState("");
+	const emailMatches = email.match(/^[a-zA-Z0-9._+-]+@[a-zA-Z0-9-.]+\.[a-zA-Z]{2,}$/);
+	const passwordMatches = password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/);
 
-	const handleLogin = async e => {
+	const handleLogin = async (e) => {
 		e.preventDefault();
-		const response = await login({
-			email,
-			password,
-		});
-		setToken(response.token);
-		setUser(response.user);
-		redirect();
+		const response = await login({ email, password });
+		if (response.error) {
+			console.log(response.error);
+			setError(response.error.message);
+		} else {
+			const { user, token } = response;
+			console.log({ token, user });
+			setToken(response.token);
+			setUser(response.user);
+			redirect();
+		}
 	};
 
 	return (
@@ -42,8 +57,9 @@ export const LoginTab = ({
 								name={ "email" }
 								id={ "email" }
 								label={ "E-Mail" }
-								fullWidth={ true }
-								onChange={ e => setEmail(e.target.value) }
+								error={ !emailMatches && email.length > 0 }
+								onChange={ (e) => setEmail(e.target.value) }
+								fullWidth
 							/>
 						</Stack>
 						<Stack direction={ "row" }>
@@ -52,8 +68,9 @@ export const LoginTab = ({
 								name={ "password" }
 								id={ "password" }
 								label={ "Password" }
-								onChange={ e => setPassword(e.target.value) }
-								fullWidth={ true }
+								error={ !passwordMatches && password.length > 0 }
+								onChange={ (e) => setPassword(e.target.value) }
+								fullWidth
 							/>
 						</Stack>
 						<Stack direction={ "row" } spacing={ 3 }>
@@ -62,7 +79,8 @@ export const LoginTab = ({
 								size={ "large" }
 								color={ "primary" }
 								endIcon={ <CloseIcon /> }
-								fullWidth={ true }>
+								fullWidth
+							>
 								cancel
 							</Button>
 							<Button
@@ -71,13 +89,16 @@ export const LoginTab = ({
 								color={ "primary" }
 								endIcon={ <LoginIcon /> }
 								onClick={ handleLogin }
-								fullWidth={ true }>
+								disabled={ !emailMatches || !passwordMatches }
+								fullWidth
+							>
 								Login
 							</Button>
 						</Stack>
 						<Box>
 							<span>* Pflichtfeld</span>
 						</Box>
+						{ error && <Alert severity={ "error" }>{ error }</Alert> }
 					</Stack>
 				</form>
 			</section>

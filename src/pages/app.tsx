@@ -3,7 +3,7 @@ import { Box, Container, NoSsr, Stack } from "@mui/material";
 import Layout from "@components/Layout";
 import List from "../components/app/List";
 import ListSkeleton from "../components/app/ListSkeleton";
-import { TaskList } from "@interfaces/index";
+import { TaskList } from "@interfaces/entitys";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 

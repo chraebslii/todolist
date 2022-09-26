@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Divider, IconButton, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { TaskList } from "@interfaces/index";
+import { TaskList } from "@interfaces/entitys";
 import Task from "./Task";
 
 export default function List({ id, name, tasks }: TaskList){
