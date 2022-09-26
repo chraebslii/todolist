@@ -6,6 +6,8 @@ import { Session, User, UserData } from "@interfaces/entitys";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 import axios from "axios";
+import SetUserInfo from "@components/profile/SetUserInfo";
+import SetPassword from "@components/profile/SetPassword";
 
 const getUser = async (token: string): Promise<User> => {
 	const session: Session = await axios.post(`${ process.env.API_URL }/session/verify`, { token }).then(res => res.data);
@@ -47,17 +49,10 @@ export default function Profile() {
 						<section>
 							<Avatar alt="Account" src={ `${ process.env.API_URL }/userdata/image/${ user.id }` } />
 						</section>
-						<section>
-							<Typography variant={ "h4" }>Personal Info:</Typography>
-							<Typography variant={ "h5" }>FirstName: { userData.firstName }</Typography>
-							<Typography variant={ "h5" }>LastName: { userData.lastName }</Typography>
-							<Typography variant={ "h5" }>Username: { user.username }</Typography>
-						</section>
-						<section>
-							<Typography variant={ "h4" }>Account:</Typography>
-							<Typography variant={ "h5" }>Email: { user.email }</Typography>
-							<Typography variant={ "h5" }>Password: { user.password } Confirm: { user.password }</Typography>
-						</section>
+						<Stack spacing={ 5 } direction={ "column" }>
+							<SetUserInfo userData={ userData } user={ user } />
+							<SetPassword user={ user } />
+						</Stack>
 						<section>
 							<Typography variant={ "h4" }>Sessions:</Typography>
 							<Stack spacing={ 0 } direction={ "column" }>
