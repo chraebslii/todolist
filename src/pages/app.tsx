@@ -11,8 +11,8 @@ export default function App() {
 	const [ data, setData ] = useState<TaskList[] | null>(null);
 	const [ isLoading, setLoading ] = useState(false);
 
-	const [ cookies ] = useCookies([ "token", "user" ]);
-	const authToken = cookies.token;
+	const [ cookies ] = useCookies([ "session", "user" ]);
+	const authToken = cookies.session;
 	const userID = cookies.user;
 
 	const router = useRouter();
