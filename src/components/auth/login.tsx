@@ -4,6 +4,7 @@ import { Alert, Box, Button, Stack, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import LoginIcon from "@mui/icons-material/Login";
 import { User } from "@interfaces/entitys";
+import { emailRegex, passwordRegex } from "../../utils/regex";
 
 const login = async (credentials) => {
 	const { email, password } = credentials;
@@ -11,7 +12,6 @@ const login = async (credentials) => {
 	try {
 		if (user.password === password) {
 			const session = await axios.post(`${ process.env.API_URL }/session`, { id: user.id }).then(res => res.data);
-			console.log({ user: user, token: session.token });
 			return { user: user, token: session.token };
 		} else if (!user) throw new Error("User not found");
 		else throw new Error("Wrong password");
@@ -28,8 +28,8 @@ export const LoginTab = ({
 	const [ email, setEmail ] = useState("");
 	const [ password, setPassword ] = useState("");
 	const [ error, setError ] = useState("");
-	const emailMatches = email.match(/^[a-zA-Z0-9._+-]+@[a-zA-Z0-9-.]+\.[a-zA-Z]{2,}$/);
-	const passwordMatches = password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/);
+	const emailMatches = email.match(emailRegex);
+	const passwordMatches = password.match(passwordRegex);
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
