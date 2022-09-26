@@ -4,7 +4,7 @@ import { Alert, Box, Button, Stack, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import LoginIcon from "@mui/icons-material/Login";
 import { User } from "@interfaces/entitys";
-import { emailRegex, passwordRegex } from "../../utils/regex";
+import { emailRegex, passwordRegex } from "@utils/regex";
 
 const login = async (credentials) => {
 	const { email, password } = credentials;

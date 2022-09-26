@@ -4,7 +4,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useState } from "react";
 import axios from "axios";
 import { User } from "@interfaces/entitys";
-import { emailRegex, passwordRegex, usernameRegex } from "../../utils/regex";
+import { emailRegex, passwordRegex, usernameRegex } from "@utils/regex";
 
 const signup = async credentials => {
 	try {
