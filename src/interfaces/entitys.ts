@@ -4,7 +4,7 @@ export type User = {
 	email: string;
 	password: string;
 	lastLogin: string;
-	sessions: Session[];
+	sessions: Partial<Session[]>;
 };
 
 export type TaskList = {
@@ -12,7 +12,7 @@ export type TaskList = {
 	userId: string;
 	name: string;
 	description: string;
-	tasks?: TaskItem[];
+	tasks?: Partial<TaskItem[]>;
 };
 
 export type TaskItem = {
