@@ -1,37 +1,54 @@
-import { Box, Button, Stack, TextField } from "@mui/material";
+import { Alert, Box, Button, Stack, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useState } from "react";
 import axios from "axios";
+import { User } from "@interfaces/entitys";
+import { emailRegex, passwordRegex, usernameRegex } from "../../utils/regex";
 
 const signup = async credentials => {
-	return await axios.post(`${ process.env.API_URL }/auth/signup`, credentials).then(res => res.data);
+	try {
+		const usernameExists = await axios.get(`${ process.env.API_URL }/user?username=${ credentials.username }`).then(res => res.data);
+		const emailExists = await axios.get(`${ process.env.API_URL }/user?email=${ credentials.email }`).then(res => res.data);
+		if (usernameExists) throw new Error("Username already exists");
+		if (emailExists) throw new Error("E-Mail already exists");
+
+		const user: User = await axios.post(`${ process.env.API_URL }/user`, credentials).then(res => res.data);
+		const session = await axios.post(`${ process.env.API_URL }/session`, { id: user.id }).then(res => res.data);
+		return { user: user, token: session.token };
+	} catch (e) {
+		return { error: { message: e.message } };
+	}
+
 };
 
 export const SignupTab = ({
-	setToken,
-	setUser,
-	redirect,
+	setToken, setUser, redirect,
 }: {
-	setToken: (string) => void;
-	setUser: (string) => void;
-	redirect: () => void;
+	setToken: (string) => void; setUser: (string) => void; redirect: () => void;
 }) => {
 	const [ email, setEmail ] = useState("");
 	const [ password, setPassword ] = useState("");
 	const [ passwordConfirm, setPasswordConfirm ] = useState("");
 	const [ username, setUsername ] = useState("");
+	const [ error, setError ] = useState("");
+
+	const emailMatches = email.match(emailRegex);
+	const usernameMatches = username.match(usernameRegex);
+	const passwordMatches = password.match(passwordRegex);
 
 	const handleSignup = async e => {
 		e.preventDefault();
-		const response = await signup({
-			email,
-			password,
-			username,
-		});
-		setToken(response.token);
-		setUser(response.user);
-		redirect();
+		const response = await signup({ email, password, username });
+		if (response.error) {
+			setError(response.error.message);
+		} else {
+			const { user, token } = response;
+			console.log({ token, user });
+			setToken(response.token);
+			setUser(response.user);
+			redirect();
+		}
 	};
 
 	return (
@@ -44,8 +61,9 @@ export const SignupTab = ({
 								name={ "username" }
 								id={ "username" }
 								label={ "Username" }
-								fullWidth={ true }
+								error={ !usernameMatches && username.length > 0 }
 								onChange={ e => setUsername(e.target.value) }
+								fullWidth
 							/>
 						</Stack>
 						<Stack direction={ "row" }>
@@ -54,8 +72,9 @@ export const SignupTab = ({
 								name={ "email" }
 								id={ "email" }
 								label={ "E-Mail" }
-								fullWidth={ true }
+								error={ !emailMatches && email.length > 0 }
 								onChange={ e => setEmail(e.target.value) }
+								fullWidth
 							/>
 						</Stack>
 						<Stack direction={ "row" } spacing={ 1 }>
@@ -64,16 +83,18 @@ export const SignupTab = ({
 								name={ "password" }
 								id={ "password" }
 								label={ "Password" }
-								fullWidth={ true }
+								error={ !passwordMatches && password.length > 0 }
 								onChange={ e => setPassword(e.target.value) }
+								fullWidth
 							/>
 							<TextField
 								type={ "password" }
 								name={ "repeat-password" }
 								id={ "repeat-password" }
 								label={ "repeat Password" }
-								fullWidth={ true }
+								error={ password !== passwordConfirm && passwordConfirm.length > 0 }
 								onChange={ e => setPasswordConfirm(e.target.value) }
+								fullWidth
 							/>
 						</Stack>
 						<Stack direction={ "row" } spacing={ 1 }>
@@ -82,7 +103,7 @@ export const SignupTab = ({
 								size={ "large" }
 								color={ "primary" }
 								endIcon={ <CloseIcon /> }
-								fullWidth={ true }>
+								fullWidth>
 								cancel
 							</Button>
 							<Button
@@ -90,14 +111,16 @@ export const SignupTab = ({
 								size={ "large" }
 								color={ "primary" }
 								endIcon={ <PersonAddIcon /> }
-								fullWidth={ true }
-								onClick={ handleSignup }>
+								onClick={ handleSignup }
+								disabled={ !emailMatches || !passwordMatches || !usernameMatches || password !== passwordConfirm }
+								fullWidth>
 								Signup
 							</Button>
 						</Stack>
 						<Box>
 							<span>* Pflichtfeld</span>
 						</Box>
+						{ error && <Alert severity={ "error" }>{ error }</Alert> }
 					</Stack>
 				</form>
 			</section>

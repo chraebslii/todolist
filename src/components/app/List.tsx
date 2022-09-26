@@ -1,19 +1,16 @@
 import React, { useState } from "react";
 import { Container, Divider, IconButton, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { TaskList } from "@interfaces/index";
+import { TaskList } from "@interfaces/entitys";
 import Task from "./Task";
 
-export default function List({ id, name, tasks }: TaskList){
-	const [ , setRenderNewTask ] = useState(false);
-	const handleNewTask = () => {
-		setRenderNewTask(true);
-		tasks.push({ name: "", checked: false });
-		setTimeout(() => {
-			setRenderNewTask(false);
-		}, 500);
-	};
+export default function List({ id, name, description, tasks }: TaskList) {
+	const [ allTasks, setAllTasks ] = useState(tasks);
 
+	const handleNewTask = () => {
+		setAllTasks([ ...allTasks, { name: "", description: "", checked: false } ]);
+	};
+	
 	return (
 		<>
 			<Container
