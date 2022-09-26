@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { Box, Container, NoSsr, Stack } from "@mui/material";
-import Layout from "@components/Layout";
+import Page from "@components/common/Page";
+import { NoSsr, Stack } from "@mui/material";
 import List from "../components/app/List";
 import ListSkeleton from "../components/app/ListSkeleton";
 import { TaskList } from "@interfaces/entitys";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 
-export default function App(){
+export default function App() {
 	const [ data, setData ] = useState<TaskList[] | null>(null);
 	const [ isLoading, setLoading ] = useState(false);
 
@@ -33,21 +33,15 @@ export default function App(){
 	}, [ authToken, router ]);
 	return authToken ? (
 		<NoSsr>
-			<Layout title={ "App" }>
-				<Box>
-					<main>
-						<Container sx={ { padding: "2rem 0" } }>
-							<Stack spacing={ 5 } direction={ "column" } alignItems={ "center" }>
-								{ isLoading ? (
-									<ListSkeleton />
-								) : (
-									data && data.map(list => <List key={ list.id } { ...list } />)
-								) }
-							</Stack>
-						</Container>
-					</main>
-				</Box>
-			</Layout>
+			<Page name={ "App" }>
+				<Stack spacing={ 5 } direction={ "column" } alignItems={ "center" }>
+					{ isLoading ? (
+						<ListSkeleton />
+					) : (
+						data && data.map(list => <List key={ list.id } { ...list } />)
+					) }
+				</Stack>
+			</Page>
 		</NoSsr>
 	) : null;
 }

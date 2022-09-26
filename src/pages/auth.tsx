@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { Box, Container, Tab, Tabs } from "@mui/material";
-import Layout from "@components/Layout";
+import Page from "@components/common/Page";
+import { Box, Tab, Tabs } from "@mui/material";
 import { LoginTab } from "@components/auth/login";
 import { SignupTab } from "@components/auth/signup";
 import { useRouter } from "next/router";
@@ -57,36 +57,30 @@ export default function Auth() {
 	const redirect = () => router.push("/app");
 
 	return (
-		<Layout title={ "Login" }>
-			<Box>
-				<main>
-					<Container sx={ { padding: "5rem 0", display: "flex", justifyContent: "center" } }>
-						<Box
-							sx={ {
-								width: "50%",
-							} }>
-							<Box sx={ { width: "100%" } }>
-								<Box sx={ { borderBottom: 1, borderColor: "divider" } }>
-									<Tabs
-										value={ value }
-										onChange={ handleChange }
-										aria-label="basic tabs example"
-										variant={ "fullWidth" }>
-										<Tab label="Login" { ...a11yProps(0) } />
-										<Tab label="Sign up" { ...a11yProps(1) } />
-									</Tabs>
-								</Box>
-								<TabPanel value={ value } index={ 0 }>
-									<LoginTab setToken={ setToken } setUser={ setUser } redirect={ redirect } />
-								</TabPanel>
-								<TabPanel value={ value } index={ 1 }>
-									<SignupTab setToken={ setToken } setUser={ setUser } redirect={ redirect } />
-								</TabPanel>
-							</Box>
-						</Box>
-					</Container>
-				</main>
+		<Page name={ "Login" } sx={ { padding: "5rem 0", display: "flex", justifyContent: "center" } }>
+			<Box
+				sx={ {
+					width: "50%",
+				} }>
+				<Box sx={ { width: "100%" } }>
+					<Box sx={ { borderBottom: 1, borderColor: "divider" } }>
+						<Tabs
+							value={ value }
+							onChange={ handleChange }
+							aria-label="basic tabs example"
+							variant={ "fullWidth" }>
+							<Tab label="Login" { ...a11yProps(0) } />
+							<Tab label="Sign up" { ...a11yProps(1) } />
+						</Tabs>
+					</Box>
+					<TabPanel value={ value } index={ 0 }>
+						<LoginTab setToken={ setToken } setUser={ setUser } redirect={ redirect } />
+					</TabPanel>
+					<TabPanel value={ value } index={ 1 }>
+						<SignupTab setToken={ setToken } setUser={ setUser } redirect={ redirect } />
+					</TabPanel>
+				</Box>
 			</Box>
-		</Layout>
+		</Page>
 	);
 }
