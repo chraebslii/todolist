@@ -8,19 +8,19 @@ export type User = {
 };
 
 export type TaskList = {
-	id: string;
+	id?: string;
 	userId: string;
 	name: string;
 	description: string;
-	tasks?: Partial<TaskItem[]>;
+	tasks: TaskItem[];
 };
 
 export type TaskItem = {
-	id: string;
+	id?: string;
 	name: string;
 	checked: boolean;
 	description: string;
-	listId: string;
+	listId?: string;
 };
 
 export type Session = {
