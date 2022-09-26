@@ -1,5 +1,6 @@
 export type User = {
 	id: string;
+	name?: string;
 	username: string;
 	email: string;
 	password: string;
@@ -29,4 +30,11 @@ export type Session = {
 	token: string;
 	createdAt: Date;
 	active: boolean;
+}
+
+export type UserData = {
+	id: string;
+	firstName: string;
+	lastName: string;
+	image: string;
 }
