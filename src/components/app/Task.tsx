@@ -1,27 +1,92 @@
 import React from "react";
-import { Box, Button, Checkbox, FormControlLabel, IconButton, Modal, Stack, TextField } from "@mui/material";
+import {
+	Box,
+	Button,
+	Checkbox,
+	FormControlLabel,
+	IconButton,
+	Modal,
+	Stack,
+	TextField,
+	Typography,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
+import CancelIcon from "@mui/icons-material/Cancel";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { TaskItem } from "@interfaces/entitys";
+import { ResponseError } from "@interfaces/error";
+import { SetState } from "@interfaces/react";
+import { debounce } from "lodash";
+import { requestHandler } from "@utils/request-handler";
 
-export default function Task({ id, name, checked }: TaskItem){
-	const [ detailsOpened, setDetailsOpened ] = React.useState(false);
+const saveOrUpdateTask = (task: TaskItem, setError: SetState<ResponseError>): Promise<TaskItem> => {
+	if (!task.id) {
+		return requestHandler<TaskItem>("POST", "/task", task, setError);
+	} else {
+		return requestHandler<TaskItem>("PUT", `/task/${ task.id }`, task, setError);
+	}
+};
+
+export default function Task({
+	taskItem, handleTaskChange,
+}: { taskItem: TaskItem, handleTaskChange: (task: TaskItem, deleted?: boolean) => void }) {
+	const [ detailsOpened, setDetailsOpened ] = React.useState<boolean>(false);
+	const [ task, setTask ] = React.useState<TaskItem>(taskItem);
+	const [ tempTask, setTempTask ] = React.useState<TaskItem>(taskItem);
+	const [ seed, setSeed ] = React.useState<number>(1);
+	const [ error, setError ] = React.useState<ResponseError>();
+	const [ deleted, setDeleted ] = React.useState<boolean>(false);
+
+	const handleRequest = (task: TaskItem, taskChange?: boolean) => {
+		saveOrUpdateTask(task, setError).then(task => {
+			if (task) {
+				setTask(task);
+				setSeed(Math.random());
+				taskChange && handleTaskChange(task);
+			}
+		});
+	};
+
 	const handleOpen = () => setDetailsOpened(true);
 	const handleClose = () => {
-		tempValue.title = value.title;
+		setTempTask(task);
 		setDetailsOpened(false);
 	};
 
-	const [ value, setValue ] = React.useState({ title: name, checked: checked });
-	const [ tempValue, setTempValue ] = React.useState({ title: name, checked: checked });
-	const [ seed, setSeed ] = React.useState(1);
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => updateDebouncedName(e.target.value);
+	const updateDebouncedName = debounce((name: string) => {
+		setTask({ ...task, name: name });
+		handleRequest({ ...task, name: name });
+	}, 1000);
+
 	const handleSave = () => {
-		value.title = tempValue.title;
+		setTask({ ...task, ...tempTask });
+		handleRequest({ ...task, ...tempTask });
 		setDetailsOpened(false);
-		setSeed(Math.random());
 	};
 
-	return (
+	const handleCheck = () => {
+		setTask({ ...task, checked: !task.checked });
+		handleRequest({ ...task, checked: !task.checked }, true);
+	};
+
+	const handleDelete = () => {
+		if (window.confirm("Are you sure you want to delete this task?")) {
+			requestHandler("DELETE", `/task/${ task.id }`, undefined, setError).then(() => {
+				setDetailsOpened(false);
+				setDeleted(true);
+				handleTaskChange({ ...task }, true);
+			});
+		}
+	};
+
+	if (error) {
+		alert(error.message);
+		setError(undefined);
+	}
+
+	return !deleted && (
 		<>
 			<Stack spacing={ 1 } direction={ "row" } justifyContent={ "space-between" } key={ seed }>
 				<Box sx={ { width: "100%" } }>
@@ -30,18 +95,16 @@ export default function Task({ id, name, checked }: TaskItem){
 						sx={ { width: "100%" } }
 						control={
 							<Checkbox
-								checked={ value.checked }
-								onChange={ e => setValue({ ...value, checked: e.target.checked }) }
+								checked={ task.checked }
+								onChange={ handleCheck }
 							/>
 						}
 						label={
 							<TextField
-								defaultValue={ value.title }
-								onChange={ e => setValue({ ...value, title: e.target.value }) }
+								defaultValue={ task.name }
+								onChange={ handleChange }
 								size={ "small" }
-								sx={ {
-									width: "100%",
-								} }
+								sx={ { width: "100%" } }
 							/>
 						}
 					/>
@@ -72,27 +135,41 @@ export default function Task({ id, name, checked }: TaskItem){
 					} }>
 					<Stack spacing={ 2 } direction={ "column" }>
 						<TextField
-							defaultValue={ value.title }
-							onChange={ e => setTempValue({ ...tempValue, title: e.target.value }) }
+							defaultValue={ tempTask.name }
+							onChange={ e => setTempTask({ ...tempTask, name: e.target.value }) }
 							size={ "small" }
-							sx={ {
-								width: "100%",
-							} }
+							fullWidth
+							label={ "Title" }
 						/>
+						<TextField
+							defaultValue={ tempTask.description }
+							onChange={ e => setTempTask({ ...tempTask, description: e.target.value }) }
+							size={ "small" }
+							fullWidth
+							label={ "Description" }
+							multiline
+						/>
+						<Stack direction={ "row" } sx={ { alignItems: "center", justifyContent: "flex-start" } }>
+							<Typography> Checked: </Typography>
+							<Checkbox
+								checked={ tempTask.checked }
+								onChange={ e => setTempTask({ ...tempTask, checked: e.target.checked }) }
+							/>
+						</Stack>
 						<Stack spacing={ 2 } direction={ { xs: "column", sm: "row" } }>
+							<IconButton aria-label="delete" color={ "error" } onClick={ handleDelete }>
+								<DeleteIcon />
+							</IconButton>
 							<Button
-								variant="outlined"
-								size={ "medium" }
-								color="primary"
-								fullWidth={ true }
+								variant={ "outlined" }
+								fullWidth
+								endIcon={ <CancelIcon /> }
 								onClick={ handleClose }>
 								cancel
 							</Button>
 							<Button
-								variant="contained"
-								size={ "medium" }
-								color="primary"
-								fullWidth={ true }
+								variant={ "contained" }
+								fullWidth
 								endIcon={ <SaveAsIcon /> }
 								onClick={ handleSave }>
 								save
