@@ -21,7 +21,9 @@ const updateTask = async (task: TaskItem) => {
 	}
 };
 
-export default function Task({ taskItem }: { taskItem: TaskItem }) {
+export default function Task({
+	taskItem, handleTaskChange,
+}: { taskItem: TaskItem, handleTaskChange: (task: TaskItem) => void }) {
 	const [ detailsOpened, setDetailsOpened ] = React.useState(false);
 	const handleOpen = () => setDetailsOpened(true);
 	const handleClose = () => {
@@ -34,16 +36,26 @@ export default function Task({ taskItem }: { taskItem: TaskItem }) {
 	const [ seed, setSeed ] = React.useState(1);
 
 	const handleSave = () => {
-		setTask({ ...task, name: tempTask.name });
+		setTask({ ...task, ...tempTask });
 		setTask((newTask) => {
 			if (newTask.id) {
-				updateTask(newTask).then(updateTask => {setTask(updateTask);});
+				updateTask(newTask).then(updatedTask => {setTask(updatedTask);});
 			} else {
-				saveNewTask(newTask).then(newTask => {setTask(newTask);});
+				saveNewTask(newTask).then(createdTask => {setTask(createdTask);});
 			}
 			return newTask;
 		});
 		setDetailsOpened(false);
+		setSeed(Math.random());
+	};
+
+	const handleCheck = () => {
+		setTask({ ...task, checked: !task.checked });
+		setTask((task) => {
+			updateTask(task).then(updatedTask => {setTask(updatedTask);});
+			handleTaskChange(task);
+			return task;
+		});
 		setSeed(Math.random());
 	};
 
@@ -57,7 +69,7 @@ export default function Task({ taskItem }: { taskItem: TaskItem }) {
 						control={
 							<Checkbox
 								checked={ task.checked }
-								onChange={ e => setTask({ ...task, checked: e.target.checked }) }
+								onChange={ handleCheck }
 							/>
 						}
 						label={

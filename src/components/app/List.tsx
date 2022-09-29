@@ -11,8 +11,12 @@ export default function List({ listItem }: { listItem: TaskList }) {
 	const [ list, setList ] = useState<TaskList>(listItem);
 	const [ tasks, setTasks ] = useState<TaskItem[]>(listItem.tasks);
 
-	const handleNewTask = () => {
+	const handleNewTask = () =>
 		setTasks([ ...tasks, { name: "", description: "", checked: false, listId: list.id } ]);
+
+	const handleTaskChange = (task: TaskItem) => {
+		const newTasks = tasks.map(t => t.id === task.id ? task : t);
+		setTasks(newTasks);
 	};
 
 	return (
@@ -44,7 +48,10 @@ export default function List({ listItem }: { listItem: TaskList }) {
 							{ tasks &&
 								tasks.map(task => {
 									if (!task.checked) {
-										return <Task key={ generateIdIfNoId(task.id) } taskItem={ task } />;
+										return <Task
+											key={ generateIdIfNoId(task.id) }
+											taskItem={ task }
+											handleTaskChange={ handleTaskChange } />;
 									}
 								}) }
 						</Stack>
@@ -59,7 +66,10 @@ export default function List({ listItem }: { listItem: TaskList }) {
 								{ tasks &&
 									tasks.map(task => {
 										if (task.checked) {
-											return <Task key={ generateIdIfNoId(task.id) } taskItem={ task } />;
+											return <Task
+												key={ generateIdIfNoId(task.id) }
+												taskItem={ task }
+												handleTaskChange={ handleTaskChange } />;
 										}
 									}) }
 							</Stack>
