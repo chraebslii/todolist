@@ -3,20 +3,46 @@ import { Box, Button, Checkbox, FormControlLabel, IconButton, Modal, Stack, Text
 import EditIcon from "@mui/icons-material/Edit";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import { TaskItem } from "@interfaces/entitys";
+import axios from "axios";
 
-export default function Task({ id, name, checked }: TaskItem){
+const saveNewTask = async (task: TaskItem) => {
+	try {
+		return await axios.post(`${ process.env.API_URL }/task`, task).then(res => res.data);
+	} catch (e) {
+		throw new Error(e);
+	}
+};
+
+const updateTask = async (task: TaskItem) => {
+	try {
+		return await axios.put(`${ process.env.API_URL }/task/${ task.id }`, task).then(res => res.data);
+	} catch (e) {
+		throw new Error(e);
+	}
+};
+
+export default function Task({ taskItem }: { taskItem: TaskItem }) {
 	const [ detailsOpened, setDetailsOpened ] = React.useState(false);
 	const handleOpen = () => setDetailsOpened(true);
 	const handleClose = () => {
-		tempValue.title = value.title;
+		setTempTask(task);
 		setDetailsOpened(false);
 	};
 
-	const [ value, setValue ] = React.useState({ title: name, checked: checked });
-	const [ tempValue, setTempValue ] = React.useState({ title: name, checked: checked });
+	const [ task, setTask ] = React.useState(taskItem);
+	const [ tempTask, setTempTask ] = React.useState(taskItem);
 	const [ seed, setSeed ] = React.useState(1);
+
 	const handleSave = () => {
-		value.title = tempValue.title;
+		setTask({ ...task, name: tempTask.name });
+		setTask((newTask) => {
+			if (newTask.id) {
+				updateTask(newTask).then(updateTask => {setTask(updateTask);});
+			} else {
+				saveNewTask(newTask).then(newTask => {setTask(newTask);});
+			}
+			return newTask;
+		});
 		setDetailsOpened(false);
 		setSeed(Math.random());
 	};
@@ -30,18 +56,16 @@ export default function Task({ id, name, checked }: TaskItem){
 						sx={ { width: "100%" } }
 						control={
 							<Checkbox
-								checked={ value.checked }
-								onChange={ e => setValue({ ...value, checked: e.target.checked }) }
+								checked={ task.checked }
+								onChange={ e => setTask({ ...task, checked: e.target.checked }) }
 							/>
 						}
 						label={
 							<TextField
-								defaultValue={ value.title }
-								onChange={ e => setValue({ ...value, title: e.target.value }) }
+								defaultValue={ task.name }
+								onChange={ e => setTask({ ...task, name: e.target.value }) }
 								size={ "small" }
-								sx={ {
-									width: "100%",
-								} }
+								sx={ { width: "100%" } }
 							/>
 						}
 					/>
@@ -72,8 +96,8 @@ export default function Task({ id, name, checked }: TaskItem){
 					} }>
 					<Stack spacing={ 2 } direction={ "column" }>
 						<TextField
-							defaultValue={ value.title }
-							onChange={ e => setTempValue({ ...tempValue, title: e.target.value }) }
+							defaultValue={ task.name }
+							onChange={ e => setTempTask({ ...tempTask, name: e.target.value }) }
 							size={ "small" }
 							sx={ {
 								width: "100%",

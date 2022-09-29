@@ -10,7 +10,7 @@ export default function List({ id, name, description, tasks }: TaskList) {
 	const handleNewTask = () => {
 		setAllTasks([ ...allTasks, { name: "", description: "", checked: false } ]);
 	};
-	
+
 	return (
 		<>
 			<Container
@@ -40,7 +40,7 @@ export default function List({ id, name, description, tasks }: TaskList) {
 							{ tasks &&
 								tasks.map(task => {
 									if (!task.checked) {
-										return <Task { ...task } key={ task.id } />;
+										return <Task key={ task.id } taskItem={ task } />;
 									}
 								}) }
 						</Stack>
@@ -55,7 +55,7 @@ export default function List({ id, name, description, tasks }: TaskList) {
 								{ tasks &&
 									tasks.map(task => {
 										if (task.checked) {
-											return <Task { ...task } key={ task.id } />;
+											return <Task key={ task.id } taskItem={ task } />;
 										}
 									}) }
 							</Stack>
