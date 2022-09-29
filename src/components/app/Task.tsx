@@ -22,6 +22,14 @@ const updateTask = async (task: TaskItem) => {
 	}
 };
 
+const saveOrUpdateTask = async (task: TaskItem) => {
+	if (task.id) {
+		return await updateTask(task);
+	} else {
+		return await saveNewTask(task);
+	}
+};
+
 export default function Task({
 	taskItem, handleTaskChange,
 }: { taskItem: TaskItem, handleTaskChange: (task: TaskItem) => void }) {
@@ -39,34 +47,22 @@ export default function Task({
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => updateDebouncedName(e.target.value);
 	const updateDebouncedName = debounce((name: string) => {
 		setTask({ ...task, name: name });
-		if (task.id) {
-			updateTask({ ...task, name: name }).then(updatedTask => setTask(updatedTask));
-		} else {
-			saveNewTask({ ...task, name: name }).then(savedTask => setTask(savedTask));
-		}
+		saveOrUpdateTask({ ...task, name: name }).then(task => setTask(task));
 		setSeed(Math.random());
 	}, 1000);
 
 	const handleSave = () => {
 		setTask({ ...task, ...tempTask });
-		setTask(newTask => {
-			if (newTask.id) {
-				updateTask(newTask).then(updatedTask => setTask(updatedTask));
-			} else {
-				saveNewTask(newTask).then(createdTask => setTask(createdTask));
-			}
-			return newTask;
-		});
+		saveOrUpdateTask({ ...task, ...tempTask }).then(task => setTask(task));
 		setDetailsOpened(false);
 		setSeed(Math.random());
 	};
 
 	const handleCheck = () => {
 		setTask({ ...task, checked: !task.checked });
-		setTask(task => {
-			updateTask(task).then(updatedTask => setTask(updatedTask));
+		saveOrUpdateTask({ ...task, checked: !task.checked }).then(task => {
+			setTask(task);
 			handleTaskChange(task);
-			return task;
 		});
 		setSeed(Math.random());
 	};
