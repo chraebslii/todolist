@@ -4,6 +4,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import { TaskItem } from "@interfaces/entitys";
 import axios from "axios";
+import { debounce } from "lodash";
 
 const saveNewTask = async (task: TaskItem) => {
 	try {
@@ -24,24 +25,35 @@ const updateTask = async (task: TaskItem) => {
 export default function Task({
 	taskItem, handleTaskChange,
 }: { taskItem: TaskItem, handleTaskChange: (task: TaskItem) => void }) {
-	const [ detailsOpened, setDetailsOpened ] = React.useState(false);
+	const [ detailsOpened, setDetailsOpened ] = React.useState<boolean>(false);
 	const handleOpen = () => setDetailsOpened(true);
 	const handleClose = () => {
 		setTempTask(task);
 		setDetailsOpened(false);
 	};
 
-	const [ task, setTask ] = React.useState(taskItem);
-	const [ tempTask, setTempTask ] = React.useState(taskItem);
-	const [ seed, setSeed ] = React.useState(1);
+	const [ task, setTask ] = React.useState<TaskItem>(taskItem);
+	const [ tempTask, setTempTask ] = React.useState<TaskItem>(taskItem);
+	const [ seed, setSeed ] = React.useState<number>(1);
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => updateDebouncedName(e.target.value);
+	const updateDebouncedName = debounce((name: string) => {
+		setTask({ ...task, name: name });
+		if (task.id) {
+			updateTask({ ...task, name: name }).then(updatedTask => setTask(updatedTask));
+		} else {
+			saveNewTask({ ...task, name: name }).then(savedTask => setTask(savedTask));
+		}
+		setSeed(Math.random());
+	}, 1000);
 
 	const handleSave = () => {
 		setTask({ ...task, ...tempTask });
-		setTask((newTask) => {
+		setTask(newTask => {
 			if (newTask.id) {
-				updateTask(newTask).then(updatedTask => {setTask(updatedTask);});
+				updateTask(newTask).then(updatedTask => setTask(updatedTask));
 			} else {
-				saveNewTask(newTask).then(createdTask => {setTask(createdTask);});
+				saveNewTask(newTask).then(createdTask => setTask(createdTask));
 			}
 			return newTask;
 		});
@@ -51,8 +63,8 @@ export default function Task({
 
 	const handleCheck = () => {
 		setTask({ ...task, checked: !task.checked });
-		setTask((task) => {
-			updateTask(task).then(updatedTask => {setTask(updatedTask);});
+		setTask(task => {
+			updateTask(task).then(updatedTask => setTask(updatedTask));
 			handleTaskChange(task);
 			return task;
 		});
@@ -68,14 +80,15 @@ export default function Task({
 						sx={ { width: "100%" } }
 						control={
 							<Checkbox
-								checked={ task.checked }
+								defaultChecked={ task.checked }
+								//checked={ task.checked }
 								onChange={ handleCheck }
 							/>
 						}
 						label={
 							<TextField
 								defaultValue={ task.name }
-								onChange={ e => setTask({ ...task, name: e.target.value }) }
+								onChange={ handleChange }
 								size={ "small" }
 								sx={ { width: "100%" } }
 							/>
