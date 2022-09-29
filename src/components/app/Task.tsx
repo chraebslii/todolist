@@ -5,24 +5,14 @@ import SaveAsIcon from "@mui/icons-material/SaveAs";
 import { TaskItem } from "@interfaces/entitys";
 import { ResponseError } from "@interfaces/error";
 import { SetState } from "@interfaces/react";
-import axios from "axios";
 import { debounce } from "lodash";
-
-const requestHandler = (method: "POST" | "PUT", path: string, body: TaskItem, setError: SetState<ResponseError>) => {
-	return axios
-		.request({ method, url: `${ process.env.API_URL }${ path }`, data: body })
-		.then((res) => res.data as TaskItem)
-		.catch((err) => {
-			setError({ message: err.message, code: err.code });
-			throw err as ResponseError;
-		});
-};
+import { requestHandler } from "@utils/request-handler";
 
 const saveOrUpdateTask = async (task: TaskItem, setError: SetState<ResponseError>): Promise<TaskItem> => {
 	if (!task.id) {
-		return requestHandler("POST", "/task", task, setError);
+		return requestHandler<TaskItem>("POST", "/task", task, setError);
 	} else {
-		return requestHandler("PUT", `/task/${ task.id }`, task, setError);
+		return requestHandler<TaskItem>("PUT", `/task/${ task.id }`, task, setError);
 	}
 };
 
@@ -81,7 +71,7 @@ export default function Task(
 						sx={ { width: "100%" } }
 						control={
 							<Checkbox
-								defaultChecked={ task.checked }
+								checked={ task.checked }
 								onChange={ handleCheck }
 							/>
 						}

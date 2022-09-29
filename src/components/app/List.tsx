@@ -3,6 +3,7 @@ import { Container, Divider, IconButton, Stack, Typography } from "@mui/material
 import AddIcon from "@mui/icons-material/Add";
 import { TaskItem, TaskList } from "@interfaces/entitys";
 import Task from "./Task";
+import { requestHandler } from "@utils/request-handler";
 
 const generateIdIfNoId = (id: string | undefined): string =>
 	id ? id : Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -11,8 +12,11 @@ export default function List({ listItem }: { listItem: TaskList }) {
 	const [ list, setList ] = useState<TaskList>(listItem);
 	const [ tasks, setTasks ] = useState<TaskItem[]>(listItem.tasks);
 
-	const handleNewTask = () =>
-		setTasks([ ...tasks, { name: "", description: "", checked: false, listId: list.id } ]);
+	const handleNewTask = async () => {
+		const newTask: TaskItem = { name: "", description: "", checked: false, listId: list.id };
+		const createdTask = await requestHandler<TaskItem>("POST", "/task", newTask);
+		setTasks([ ...tasks, createdTask ]);
+	};
 
 	const handleTaskChange = (task: TaskItem) => setTasks(tasks.map(t => t.id === task.id ? task : t));
 
