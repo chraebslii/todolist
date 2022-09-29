@@ -20,7 +20,7 @@ import { SetState } from "@interfaces/react";
 import { debounce } from "lodash";
 import { requestHandler } from "@utils/request-handler";
 
-const saveOrUpdateTask = async (task: TaskItem, setError: SetState<ResponseError>): Promise<TaskItem> => {
+const saveOrUpdateTask = (task: TaskItem, setError: SetState<ResponseError>): Promise<TaskItem> => {
 	if (!task.id) {
 		return requestHandler<TaskItem>("POST", "/task", task, setError);
 	} else {
