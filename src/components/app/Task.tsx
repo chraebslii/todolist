@@ -3,69 +3,74 @@ import { Box, Button, Checkbox, FormControlLabel, IconButton, Modal, Stack, Text
 import EditIcon from "@mui/icons-material/Edit";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import { TaskItem } from "@interfaces/entitys";
+import { ResponseError } from "@interfaces/error";
+import { SetState } from "@interfaces/react";
 import axios from "axios";
 import { debounce } from "lodash";
 
-const saveNewTask = async (task: TaskItem) => {
-	try {
-		return await axios.post(`${ process.env.API_URL }/task`, task).then(res => res.data);
-	} catch (e) {
-		throw new Error(e);
-	}
+const requestHandler = (method: "POST" | "PUT", path: string, body: TaskItem, setError: SetState<ResponseError>) => {
+	return axios
+		.request({ method, url: `${ process.env.API_URL }${ path }`, data: body })
+		.then((res) => res.data as TaskItem)
+		.catch((err) => {
+			setError({ message: err.message, code: err.code });
+			throw err as ResponseError;
+		});
 };
 
-const updateTask = async (task: TaskItem) => {
-	try {
-		return await axios.put(`${ process.env.API_URL }/task/${ task.id }`, task).then(res => res.data);
-	} catch (e) {
-		throw new Error(e);
-	}
-};
-
-const saveOrUpdateTask = async (task: TaskItem) => {
-	if (task.id) {
-		return await updateTask(task);
+const saveOrUpdateTask = async (task: TaskItem, setError: SetState<ResponseError>): Promise<TaskItem> => {
+	if (!task.id) {
+		return requestHandler("POST", "/task", task, setError);
 	} else {
-		return await saveNewTask(task);
+		return requestHandler("PUT", `/task/${ task.id }`, task, setError);
 	}
 };
 
-export default function Task({
-	taskItem, handleTaskChange,
-}: { taskItem: TaskItem, handleTaskChange: (task: TaskItem) => void }) {
+export default function Task(
+	{ taskItem, handleTaskChange }: { taskItem: TaskItem, handleTaskChange: (task: TaskItem) => void }) {
 	const [ detailsOpened, setDetailsOpened ] = React.useState<boolean>(false);
+	const [ task, setTask ] = React.useState<TaskItem>(taskItem);
+	const [ tempTask, setTempTask ] = React.useState<TaskItem>(taskItem);
+	const [ seed, setSeed ] = React.useState<number>(1);
+	const [ error, setError ] = React.useState<ResponseError>();
+
+	const handleRequest = (task: TaskItem, taskChange?: boolean) => {
+		saveOrUpdateTask(task, setError).then(task => {
+			if (task) {
+				setTask(task);
+				setSeed(Math.random());
+				taskChange && handleTaskChange(task);
+			}
+		});
+	};
+
 	const handleOpen = () => setDetailsOpened(true);
 	const handleClose = () => {
 		setTempTask(task);
 		setDetailsOpened(false);
 	};
 
-	const [ task, setTask ] = React.useState<TaskItem>(taskItem);
-	const [ tempTask, setTempTask ] = React.useState<TaskItem>(taskItem);
-	const [ seed, setSeed ] = React.useState<number>(1);
-
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => updateDebouncedName(e.target.value);
 	const updateDebouncedName = debounce((name: string) => {
 		setTask({ ...task, name: name });
-		saveOrUpdateTask({ ...task, name: name }).then(task => setTask(task));
-		setSeed(Math.random());
+		handleRequest({ ...task, name: name });
 	}, 1000);
 
 	const handleSave = () => {
 		setTask({ ...task, ...tempTask });
-		saveOrUpdateTask({ ...task, ...tempTask }).then(task => setTask(task));
+		handleRequest({ ...task, ...tempTask });
 		setDetailsOpened(false);
-		setSeed(Math.random());
 	};
 
 	const handleCheck = () => {
 		setTask({ ...task, checked: !task.checked });
-		saveOrUpdateTask({ ...task, checked: !task.checked }).then(task => {
-			setTask(task);
-			handleTaskChange(task);
-		});
-		setSeed(Math.random());
+		handleRequest({ ...task, checked: !task.checked }, true);
 	};
+
+	if (error) {
+		alert(error.message);
+		setError(undefined);
+	}
 
 	return (
 		<>
@@ -77,7 +82,6 @@ export default function Task({
 						control={
 							<Checkbox
 								defaultChecked={ task.checked }
-								//checked={ task.checked }
 								onChange={ handleCheck }
 							/>
 						}
