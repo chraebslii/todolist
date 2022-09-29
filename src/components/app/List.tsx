@@ -18,7 +18,12 @@ export default function List({ listItem }: { listItem: TaskList }) {
 		setTasks([ ...tasks, createdTask ]);
 	};
 
-	const handleTaskChange = (task: TaskItem) => setTasks(tasks.map(t => t.id === task.id ? task : t));
+	const handleTaskChange = (task: TaskItem, deleted = false) => {
+		if (deleted) {
+			setTasks(tasks.filter(t => t.id !== task.id));
+		}
+		setTasks(tasks.map(t => t.id === task.id ? task : t));
+	};
 
 	return (
 		<Container

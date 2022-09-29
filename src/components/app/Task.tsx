@@ -1,7 +1,19 @@
 import React from "react";
-import { Box, Button, Checkbox, FormControlLabel, IconButton, Modal, Stack, TextField } from "@mui/material";
+import {
+	Box,
+	Button,
+	Checkbox,
+	FormControlLabel,
+	IconButton,
+	Modal,
+	Stack,
+	TextField,
+	Typography,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
+import CancelIcon from "@mui/icons-material/Cancel";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { TaskItem } from "@interfaces/entitys";
 import { ResponseError } from "@interfaces/error";
 import { SetState } from "@interfaces/react";
@@ -16,13 +28,15 @@ const saveOrUpdateTask = async (task: TaskItem, setError: SetState<ResponseError
 	}
 };
 
-export default function Task(
-	{ taskItem, handleTaskChange }: { taskItem: TaskItem, handleTaskChange: (task: TaskItem) => void }) {
+export default function Task({
+	taskItem, handleTaskChange,
+}: { taskItem: TaskItem, handleTaskChange: (task: TaskItem, deleted?: boolean) => void }) {
 	const [ detailsOpened, setDetailsOpened ] = React.useState<boolean>(false);
 	const [ task, setTask ] = React.useState<TaskItem>(taskItem);
 	const [ tempTask, setTempTask ] = React.useState<TaskItem>(taskItem);
 	const [ seed, setSeed ] = React.useState<number>(1);
 	const [ error, setError ] = React.useState<ResponseError>();
+	const [ deleted, setDeleted ] = React.useState<boolean>(false);
 
 	const handleRequest = (task: TaskItem, taskChange?: boolean) => {
 		saveOrUpdateTask(task, setError).then(task => {
@@ -57,12 +71,22 @@ export default function Task(
 		handleRequest({ ...task, checked: !task.checked }, true);
 	};
 
+	const handleDelete = () => {
+		if (window.confirm("Are you sure you want to delete this task?")) {
+			requestHandler("DELETE", `/task/${ task.id }`, undefined, setError).then(() => {
+				setDetailsOpened(false);
+				setDeleted(true);
+				handleTaskChange({ ...task }, true);
+			});
+		}
+	};
+
 	if (error) {
 		alert(error.message);
 		setError(undefined);
 	}
 
-	return (
+	return !deleted && (
 		<>
 			<Stack spacing={ 1 } direction={ "row" } justifyContent={ "space-between" } key={ seed }>
 				<Box sx={ { width: "100%" } }>
@@ -111,27 +135,41 @@ export default function Task(
 					} }>
 					<Stack spacing={ 2 } direction={ "column" }>
 						<TextField
-							defaultValue={ task.name }
+							defaultValue={ tempTask.name }
 							onChange={ e => setTempTask({ ...tempTask, name: e.target.value }) }
 							size={ "small" }
-							sx={ {
-								width: "100%",
-							} }
+							fullWidth
+							label={ "Title" }
 						/>
+						<TextField
+							defaultValue={ tempTask.description }
+							onChange={ e => setTempTask({ ...tempTask, description: e.target.value }) }
+							size={ "small" }
+							fullWidth
+							label={ "Description" }
+							multiline
+						/>
+						<Stack direction={ "row" } sx={ { alignItems: "center", justifyContent: "flex-start" } }>
+							<Typography> Checked: </Typography>
+							<Checkbox
+								checked={ tempTask.checked }
+								onChange={ e => setTempTask({ ...tempTask, checked: e.target.checked }) }
+							/>
+						</Stack>
 						<Stack spacing={ 2 } direction={ { xs: "column", sm: "row" } }>
+							<IconButton aria-label="delete" color={ "error" } onClick={ handleDelete }>
+								<DeleteIcon />
+							</IconButton>
 							<Button
-								variant="outlined"
-								size={ "medium" }
-								color="primary"
-								fullWidth={ true }
+								variant={ "outlined" }
+								fullWidth
+								endIcon={ <CancelIcon /> }
 								onClick={ handleClose }>
 								cancel
 							</Button>
 							<Button
-								variant="contained"
-								size={ "medium" }
-								color="primary"
-								fullWidth={ true }
+								variant={ "contained" }
+								fullWidth
 								endIcon={ <SaveAsIcon /> }
 								onClick={ handleSave }>
 								save
