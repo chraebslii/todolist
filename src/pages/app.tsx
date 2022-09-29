@@ -47,7 +47,7 @@ export default function App() {
 					{ isLoading ? (
 						<ListSkeleton />
 					) : (
-						data && data.map(list => <List key={ list.id } { ...list } />)
+						data && data.map(list => <List key={ list.id } listItem={ list } />)
 					) }
 				</Stack>
 			</Page>

@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { Container, Divider, IconButton, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { TaskList } from "@interfaces/entitys";
+import { TaskItem, TaskList } from "@interfaces/entitys";
 import Task from "./Task";
 
-export default function List({ id, name, description, tasks }: TaskList) {
-	const [ allTasks, setAllTasks ] = useState(tasks);
+const generateIdIfNoId = (id: string | undefined): string =>
+	id ? id : Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+export default function List({ listItem }: { listItem: TaskList }) {
+	const [ list, setList ] = useState<TaskList>(listItem);
+	const [ tasks, setTasks ] = useState<TaskItem[]>(listItem.tasks);
 
 	const handleNewTask = () => {
-		setAllTasks([ ...allTasks, { name: "", description: "", checked: false } ]);
+		setTasks([ ...tasks, { name: "", description: "", checked: false, listId: list.id } ]);
 	};
 
 	return (
@@ -27,7 +31,7 @@ export default function List({ id, name, description, tasks }: TaskList) {
 								justifyContent: "space-between",
 								alignItems: "center",
 							} }>
-							<Typography variant={ "h5" }>{ name }</Typography>
+							<Typography variant={ "h5" }>{ list.name }</Typography>
 							<IconButton aria-label="add item" color={ "primary" } onClick={ handleNewTask }>
 								<AddIcon />
 							</IconButton>
@@ -40,7 +44,7 @@ export default function List({ id, name, description, tasks }: TaskList) {
 							{ tasks &&
 								tasks.map(task => {
 									if (!task.checked) {
-										return <Task key={ task.id } taskItem={ task } />;
+										return <Task key={ generateIdIfNoId(task.id) } taskItem={ task } />;
 									}
 								}) }
 						</Stack>
@@ -55,7 +59,7 @@ export default function List({ id, name, description, tasks }: TaskList) {
 								{ tasks &&
 									tasks.map(task => {
 										if (task.checked) {
-											return <Task key={ task.id } taskItem={ task } />;
+											return <Task key={ generateIdIfNoId(task.id) } taskItem={ task } />;
 										}
 									}) }
 							</Stack>
